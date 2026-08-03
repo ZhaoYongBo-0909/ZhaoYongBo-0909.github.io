@@ -16,12 +16,19 @@ a{color:var(--accent);text-decoration:none}
 .eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--heading)}
 h1{font-size:1.5rem;margin:8px 0 10px}
 .meta{color:var(--muted);font-size:.9rem;margin-bottom:16px}
-.tip{background:#fff8eb;border:1px solid #fde68a;border-radius:14px;padding:12px 14px;color:#92400e;font-size:.86rem;margin-bottom:18px}
+.tip{background:#fff8eb;border:1px solid #fde68a;border-radius:14px;padding:12px 14px;color:#92400e;font-size:.86rem;margin-bottom:12px}
+.tip code{font-size:.8rem}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+@media(max-width:640px){.split{grid-template-columns:1fr}}
+.pane{border:1px solid #eceef2;border-radius:16px;padding:14px 16px}
+.pane h2{font-size:.95rem;margin-bottom:6px}
+.pane p{font-size:.82rem;color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .item{padding:14px 16px;border:1px solid #eceef2;border-radius:16px}
 .item:hover{border-color:#e0d4f5}
 .item strong{display:block;margin-bottom:4px}
-.item span{font-size:.8rem;color:var(--muted)}
+.item span{font-size:.8rem;color:var(--muted);display:block}
+.item em{font-size:.75rem;color:#9ca3af;font-style:normal;margin-top:6px;display:block}
 </style>
 </head>
 <body>
@@ -31,7 +38,17 @@ h1{font-size:1.5rem;margin:8px 0 10px}
     <div class="eyebrow">Knowledge Pocket</div>
     <h1>知识口袋总览</h1>
     <p class="meta" id="meta">加载中…</p>
-    <div class="tip">「集中教学」仅在本机 <code>notes/local/</code> 显示，不会上传 GitHub。其余领域文档在 <code>notes/files/kb/</code>。</div>
+    <div class="split">
+      <div class="pane">
+        <h2>原料库（本页）</h2>
+        <p>下载的 mhtml / docx / pdf 等按领域归档。扫目录看一句话摘要，需要时再打开原文。</p>
+      </div>
+      <div class="pane">
+        <h2>成品笔记</h2>
+        <p>真正消化过的短文放在 <code>notes/articles/</code> 与笔记页精选方向（太阳辐射、SCI 框架、研究区制图等），并链回原料。</p>
+      </div>
+    </div>
+    <div class="tip">「集中教学」仅在本机 <code>notes/local/</code> 显示，不会上传 GitHub。顶层已与主研方向对齐：遥感 / GIS / 生态 / 方法与统计…</div>
     <div class="grid" id="grid"></div>
   </div>
 </div>
@@ -43,9 +60,9 @@ const tree = window.KB_TREE;
 if(!tree){document.getElementById('meta').textContent='未加载目录';}
 else{
   const total = countNotes(tree);
-  document.getElementById('meta').textContent = `已上传领域 ${tree.children.length} 个 · 笔记条目约 ${total} 条`;
+  document.getElementById('meta').textContent = `已整理领域 ${tree.children.length} 个 · 原料条目约 ${total} 条`;
   document.getElementById('grid').innerHTML = tree.children.map(c =>
-    `<a class="item" href="../../notes.html#${esc(c.id)}"><strong>${esc(c.title)}</strong><span>${countNotes(c)} 条</span></a>`
+    `<a class="item" href="../../notes.html#${esc(c.id)}"><strong>${esc(c.title)}</strong><span>${countNotes(c)} 条原料</span><em>${esc(c.description||'')}</em></a>`
   ).join('');
 }
 </script>
