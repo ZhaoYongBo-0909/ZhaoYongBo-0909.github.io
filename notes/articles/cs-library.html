@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>计算机领域知识库 · 总览</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#1c1c1e;--muted:#6b7280;--accent:#9b7ae8;--heading:#d4a5d8;--shadow:0 4px 24px rgba(0,0,0,.06);--font:'DM Sans','Noto Sans SC',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.chip{display:inline-flex;padding:9px 16px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);color:var(--muted);font-size:.88rem;font-weight:500;margin-bottom:16px}
+.chip:hover{color:var(--text)}
+.card{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:28px 30px 34px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--heading)}
+h1{font-size:1.5rem;margin:8px 0 10px}
+.meta{color:var(--muted);font-size:.9rem;margin-bottom:16px}
+.tip{background:#fff8eb;border:1px solid #fde68a;border-radius:14px;padding:12px 14px;color:#92400e;font-size:.86rem;margin-bottom:18px}
+.section{margin-top:18px}
+.section h2{font-size:1.05rem;margin-bottom:8px}
+.files{display:flex;flex-direction:column;gap:8px}
+.file{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1px solid #eceef2;border-radius:12px}
+.file:hover{border-color:#e0d4f5}
+.tag{font-size:.7rem;font-weight:600;color:var(--accent);background:#efe6ff;padding:2px 8px;border-radius:6px;margin-left:6px}
+.sub{margin-left:12px;border-left:2px solid #efe6ff;padding-left:12px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="chip" href="../../notes.html#computer-science">← 返回笔记</a>
+  <div class="card">
+    <div class="eyebrow">Local Library</div>
+    <h1>计算机领域知识库总览</h1>
+    <p class="meta" id="meta">加载中…</p>
+    <div class="tip">本页读取 <code>notes/local/catalog.json</code>。该目录已 gitignore，只在本机存在；GitHub Pages 上会提示未找到本地库。</div>
+    <div id="tree"></div>
+  </div>
+</div>
+<script>
+function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}
+function renderNode(node, depth=0){
+  const notes = (node.notes||[]).map(n => {
+    const open = n.link || n.file;
+    return `<div class="file"><div><strong>${esc(n.title)}</strong><span class="tag">${esc(n.tag||'')}</span><div style="font-size:.8rem;color:#8a8f98;margin-top:2px">${esc(n.body||'')}</div></div><div>${open?`<a href="../../${esc(open)}" target="_blank" rel="noopener">打开</a>`:''}${n.file&&n.link?` · `:''}${n.file?`<a href="../../${esc(n.file)}" download>下载</a>`:''}</div></div>`;
+  }).join('');
+  const kids = (node.children||[]).map(c => renderNode(c, depth+1)).join('');
+  return `<div class="section"><h2 style="font-size:${depth?'.95rem':'1.05rem'}">${esc(node.title)}</h2><div class="files">${notes}</div>${kids?`<div class="sub">${kids}</div>`:''}</div>`;
+}
+(async () => {
+  try {
+    const res = await fetch('../local/catalog.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const tree = data.tree;
+    let count = 0;
+    (function walk(n){ count += (n.notes||[]).length; (n.children||[]).forEach(walk); })(tree);
+    document.getElementById('meta').textContent = `本地库已加载 · 共 ${count} 条笔记条目`;
+    document.getElementById('tree').innerHTML = (tree.children||[]).map(c => renderNode(c)).join('');
+  } catch (e) {
+    document.getElementById('meta').textContent = '未检测到本地库 notes/local/catalog.json（线上环境正常）';
+    document.getElementById('tree').innerHTML = '<p style="color:#6b7280">请在本机用 python3 -m http.server 打开站点，并确认 notes/local/ 存在。</p>';
+  }
+})();
+</script>
+</body>
+</html>

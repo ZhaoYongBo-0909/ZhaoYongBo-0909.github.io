@@ -1,0 +1,7 @@
+# 本地专用（不会上传到 GitHub）
+notes/local/
+
+# 系统杂项
+.DS_Store
+Thumbs.db
+*.log

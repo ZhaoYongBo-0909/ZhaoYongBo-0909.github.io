@@ -1,0 +1,366 @@
+<!DOCTYPE html><html><head>
+      <title>R语言数据预处理：缺失值的处理</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\15540\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.13\crossnote\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="r语言数据预处理缺失值的处理"><strong>R语言数据预处理：缺失值的处理</strong> </h1>
+<h2 id="1-知识准备">1 知识准备 </h2>
+<p>数据分析正式开始前，我们必须首先对收集到的数据进行清理核查，这个通常被称为数据预处理（Data Preprocessing）或数据清洗（Data Cleaning）。因为现实中的收集到的数据可能有很多问题，又被称为Dirty Data。</p>
+<p>举个例子，我们收集到的体检数据当中，由于体格检查信息为自报，收集信息的工作人员不认真不负责，以至于很多人将体重由规定的<code>公斤</code>填为了<code>市斤</code>，这就会使得后期分析当中体重、BMI等值出现错误，导致后续分析出现一连串的错误结果。</p>
+<p>根据数据收集的方式不同，脏数据的问题五花八门，我们不打算在这里展开讲了，因为光评价数据质量几个综述都写不完。请有兴趣的小朋友去看下面列出的参考资料。<br>
+<img src="image.png" alt="alt text"></p>
+<p>一般地，数据预处理的流程主要有：</p>
+<ul>
+<li>数据的核对：一致性检查</li>
+<li>重复值的剔除</li>
+<li>缺失值的处理</li>
+<li>异常值、离群值的识别处理</li>
+<li>变量的变换</li>
+</ul>
+<h2 id="2-基本的缺失值处理方法">2 基本的缺失值处理方法 </h2>
+<p>R语言中处理缺失值的主要方法就是删除含缺失值的变量、删除含缺失值的个案、或填补这些缺失值。我们下周再介绍缺失值的分类、检验和复杂的填补方式。本次我们先学最基本的缺失值处理方法。</p>
+<p>R语言自带的基本函数就可以对缺失值进行基本的处理。以下是R语言中用来表示特殊意义的保留字，需要读者了解：</p>
+<ul>
+<li>NA：缺失值，意义是‘Not Available’</li>
+<li>NaN：无意义，如 0/0</li>
+<li>Inf：正无穷大，如1/0</li>
+<li>-Inf：负无穷大，如-1/0</li>
+<li>NULL：不存在</li>
+</ul>
+<p>接下来我们开始学习R语言中基本的缺失值处理方法。首先是如何识别缺失值：<a href="http://is.na">is.na</a>()函数，含缺失值的数据结构会用布尔值表示来。</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>y<span class="token operator">&lt;-</span>c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token keyword keyword-NA">NA</span><span class="token punctuation">)</span> <span class="token comment">#建立一个有缺失值的向量</span>
+is.na<span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token boolean">FALSE</span> <span class="token boolean">FALSE</span> <span class="token boolean">FALSE</span> <span class="token boolean">FALSE</span>  <span class="token boolean">TRUE</span>
+</code></pre><p>大多数函数都有处理缺失值的的参数，含缺失值数据必须处理，不然会影响运算结果：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>y<span class="token operator">&lt;-</span>c<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token keyword keyword-NA">NA</span><span class="token punctuation">)</span>
+sum<span class="token punctuation">(</span>y<span class="token punctuation">)</span> <span class="token comment">#求和会因缺失值计算失败</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token keyword keyword-NA">NA</span>
+sum<span class="token punctuation">(</span>y<span class="token punctuation">,</span>na.rm <span class="token operator">=</span> T<span class="token punctuation">)</span> <span class="token comment">#运算前剔除缺失值</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token number">10</span>
+</code></pre><p>接下来我们先构造一个数据集：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>name<span class="token operator">&lt;-</span>c<span class="token punctuation">(</span><span class="token string">"喜羊羊"</span><span class="token punctuation">,</span><span class="token string">"美羊羊"</span><span class="token punctuation">,</span><span class="token keyword keyword-NA">NA</span><span class="token punctuation">,</span><span class="token string">"灰太狼"</span><span class="token punctuation">,</span><span class="token string">"红太狼"</span><span class="token punctuation">)</span>
+gender<span class="token operator">&lt;-</span>c<span class="token punctuation">(</span><span class="token string">"M"</span><span class="token punctuation">,</span><span class="token string">"F"</span><span class="token punctuation">,</span><span class="token string">"M"</span><span class="token punctuation">,</span><span class="token string">"M"</span><span class="token punctuation">,</span><span class="token string">"F"</span><span class="token punctuation">)</span>
+date<span class="token operator">&lt;-</span>c<span class="token punctuation">(</span><span class="token string">"4/14/2022"</span><span class="token punctuation">,</span><span class="token keyword keyword-NA">NA</span><span class="token punctuation">,</span><span class="token string">"1/1/2020"</span><span class="token punctuation">,</span><span class="token keyword keyword-NA">NA</span><span class="token punctuation">,</span><span class="token string">"4/1/2018"</span><span class="token punctuation">)</span>
+age<span class="token operator">&lt;-</span>c<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token keyword keyword-NA">NA</span><span class="token punctuation">,</span><span class="token keyword keyword-NA">NA</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">)</span>
+test<span class="token operator">&lt;-</span>data.frame<span class="token punctuation">(</span>name<span class="token punctuation">,</span>gender<span class="token punctuation">,</span>date<span class="token punctuation">,</span>age<span class="token punctuation">)</span>
+</code></pre><p><img src="image-1.png" alt="alt text"></p>
+<p>我们可以先考察一下一共有多少缺失值，当然也可以计算单个变量缺失值多少，还可以计算缺失值的比例：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>sum<span class="token punctuation">(</span>is.na<span class="token punctuation">(</span>test<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token number">5</span>
+
+table<span class="token punctuation">(</span>is.na<span class="token punctuation">(</span>test<span class="token operator">$</span>age<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token boolean">FALSE</span>  <span class="token boolean">TRUE</span> 
+    <span class="token number">3</span>     <span class="token number">2</span>
+</code></pre><p>na.omit()：删除含有缺失值的个案</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>is.na<span class="token punctuation">(</span>test<span class="token punctuation">)</span>
+      name gender  date   age
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token boolean">FALSE</span>  <span class="token boolean">FALSE</span> <span class="token boolean">FALSE</span> <span class="token boolean">FALSE</span>
+<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token boolean">FALSE</span>  <span class="token boolean">FALSE</span>  <span class="token boolean">TRUE</span> <span class="token boolean">FALSE</span>
+<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token punctuation">]</span>  <span class="token boolean">TRUE</span>  <span class="token boolean">FALSE</span> <span class="token boolean">FALSE</span>  <span class="token boolean">TRUE</span>
+<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token boolean">FALSE</span>  <span class="token boolean">FALSE</span>  <span class="token boolean">TRUE</span>  <span class="token boolean">TRUE</span>
+<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token punctuation">]</span> <span class="token boolean">FALSE</span>  <span class="token boolean">FALSE</span> <span class="token boolean">FALSE</span> <span class="token boolean">FALSE</span>
+
+test<span class="token operator">=</span>na.omit<span class="token punctuation">(</span>test<span class="token punctuation">)</span>
+test
+    name gender      date age
+<span class="token number">1</span> 喜羊羊      M <span class="token number">4</span><span class="token operator">/</span><span class="token number">14</span><span class="token operator">/</span><span class="token number">2022</span>   <span class="token number">8</span>
+<span class="token number">5</span> 红太狼      F  <span class="token number">4</span><span class="token operator">/</span><span class="token number">1</span><span class="token operator">/</span><span class="token number">2018</span>  <span class="token number">12</span>
+</code></pre><p>除了删除，但是我们还可以考虑填补缺失值，接下来我们重新构造这个数据集，然后把年龄中缺失的数用666换掉：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>test<span class="token operator">$</span>age<span class="token punctuation">[</span>is.na<span class="token punctuation">(</span>test<span class="token operator">$</span>age<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">&lt;-</span><span class="token number">666</span> <span class="token comment">#把NA换成666</span>
+test<span class="token operator">$</span>age
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>   <span class="token number">8</span>   <span class="token number">7</span> <span class="token number">666</span> <span class="token number">666</span>  <span class="token number">12</span>
+</code></pre><p>当然，也可以使用年龄这列数的平均数、中位数、众数去换，函数必须设置na.rm = T，原因刚刚讲过。</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>test<span class="token operator">$</span>age<span class="token punctuation">[</span>is.na<span class="token punctuation">(</span>test<span class="token operator">$</span>age<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">&lt;-</span>mean<span class="token punctuation">(</span>test<span class="token operator">$</span>age<span class="token punctuation">,</span>na.rm <span class="token operator">=</span> T<span class="token punctuation">)</span> <span class="token comment">#这里必须设置na.rm = T</span>
+test<span class="token operator">$</span>age
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>  <span class="token number">8</span>  <span class="token number">7</span>  <span class="token number">9</span>  <span class="token number">9</span> <span class="token number">12</span>
+</code></pre><p>缺失的字符串也可以替换，但在这里是换不掉的，会出现以下错误：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>test<span class="token operator">$</span>name<span class="token punctuation">[</span>is.na<span class="token punctuation">(</span>test<span class="token operator">$</span>name<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">&lt;-</span><span class="token string">"哈居居"</span>
+Warning message<span class="token operator">:</span>
+In `<span class="token punctuation">[</span><span class="token operator">&lt;-</span>.factor`<span class="token punctuation">(</span>`<span class="token operator">*</span>tmp<span class="token operator">*</span>`<span class="token punctuation">,</span> is.na<span class="token punctuation">(</span>test<span class="token operator">$</span>name<span class="token punctuation">)</span><span class="token punctuation">,</span> value <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token number">4L</span><span class="token punctuation">,</span> <span class="token number">3L</span><span class="token punctuation">,</span> <span class="token keyword keyword-NA">NA</span><span class="token punctuation">,</span>  <span class="token operator">:</span>
+  invalid factor level<span class="token punctuation">,</span> <span class="token keyword keyword-NA">NA</span> generated
+test<span class="token operator">$</span>name
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> 喜羊羊 美羊羊 <span class="token operator">&lt;</span><span class="token keyword keyword-NA">NA</span><span class="token operator">&gt;</span>   灰太狼 红太狼
+Levels<span class="token operator">:</span> 红太狼 灰太狼 美羊羊 喜羊羊
+</code></pre><p>原因是在构成数据框时没有设置参数stringsAsFactors = F，因此name被默认成了因子型变量。这有两个方案，一是重构数据框，如下所示；二是强制把name变量转换成字符型。</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>test<span class="token operator">&lt;-</span>data.frame<span class="token punctuation">(</span>name<span class="token punctuation">,</span>gender<span class="token punctuation">,</span>date<span class="token punctuation">,</span>age<span class="token punctuation">,</span>stringsAsFactors <span class="token operator">=</span> F<span class="token punctuation">)</span> <span class="token comment">#方案一</span>
+test<span class="token operator">$</span>name<span class="token operator">&lt;-</span>as.character<span class="token punctuation">(</span>test<span class="token operator">$</span>name<span class="token punctuation">)</span> <span class="token comment">#方案二</span>
+
+test<span class="token operator">$</span>name<span class="token punctuation">[</span>is.na<span class="token punctuation">(</span>test<span class="token operator">$</span>name<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">&lt;-</span><span class="token string">"哈居居"</span>
+test<span class="token operator">$</span>name
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token string">"喜羊羊"</span> <span class="token string">"美羊羊"</span> <span class="token string">"哈居居"</span> <span class="token string">"灰太狼"</span> <span class="token string">"红太狼"</span>
+</code></pre><h2 id="3-缺失值的类型">3 缺失值的类型 </h2>
+<p>要深入讲解缺失值的分析，必须首先学习缺失值的分类。根据缺失的模式是否与自身取值和其他变量的取值的关系，缺失值常被分为以下三类：</p>
+<p><img src="image-2.png" alt="alt text"></p>
+<p>识别变量取值是否是随机缺失可以根据经验。比如一次经济调查中，由于一些灰色收入的人出于隐藏自己真实情况的目的故意不填收入，这很容易就看出来不属于随机缺失。</p>
+<p>当然也可以使用两样本t检验判断某个变量是否是完全随机缺失。以该变量是否存在缺失值建立哑变量，并以此哑变量为分组变量，以分析的主要变量为应变量，进行两样本t检验，若应变量取值在两组差别无统计学意义就是MCAR。否则就不属于完全随机缺失。</p>
+<p>对于MCAR或MAR，如果缺失集中在个案上，数量少于5%，一般可以直接删除个案。如果集中在变量上，也可以考虑删除该变量。如果缺失10%左右的数据，可以考虑使用多重填补方法。</p>
+<p>MANR主要与自身取值有关，最好是重新收集数据。我们就使用经典的动物睡眠数据sleep进行演示，如果用我自己的数据将不利于读者进行复现。</p>
+<h2 id="4-描述缺失的情况">4 描述缺失的情况 </h2>
+<p>通过描述统计，看看每个变量缺失值的数量和比例：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>library<span class="token punctuation">(</span>skimr<span class="token punctuation">)</span> <span class="token comment">#调用skimr包</span>
+dt<span class="token operator">=</span>VIM<span class="token operator">::</span>sleep <span class="token comment">#用VIM包中sleep数据集做演示</span>
+skim<span class="token punctuation">(</span>dt<span class="token punctuation">)</span> <span class="token comment">#看看数据的情况</span>
+
+<span class="token operator">-</span><span class="token operator">-</span> Data Summary <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+                           Values
+Name                       dt    
+Number of rows             <span class="token number">62</span>    
+Number of columns          <span class="token number">10</span>    
+_______________________          
+Column type frequency<span class="token operator">:</span>           
+  numeric                  <span class="token number">10</span>    
+________________________         
+Group variables            None  
+
+<span class="token operator">-</span><span class="token operator">-</span> Variable type<span class="token operator">:</span> numeric <span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span><span class="token operator">-</span>
+<span class="token comment"># A tibble: 10 x 11</span>
+   skim_variable n_missing complete_rate   mean     sd     p0   p25   p50
+ <span class="token operator">*</span> <span class="token operator">&lt;</span>chr<span class="token operator">&gt;</span>             <span class="token operator">&lt;</span>int<span class="token operator">&gt;</span>         <span class="token operator">&lt;</span>dbl<span class="token operator">&gt;</span>  <span class="token operator">&lt;</span>dbl<span class="token operator">&gt;</span>  <span class="token operator">&lt;</span>dbl<span class="token operator">&gt;</span>  <span class="token operator">&lt;</span>dbl<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>dbl<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>dbl<span class="token operator">&gt;</span>
+ <span class="token number">1</span> BodyWgt               <span class="token number">0</span>         <span class="token number">1</span>     <span class="token number">199.</span>   <span class="token number">899.</span>    <span class="token number">0.005</span>  <span class="token number">0.6</span>   <span class="token number">3.34</span>
+ <span class="token number">2</span> BrainWgt              <span class="token number">0</span>         <span class="token number">1</span>     <span class="token number">283.</span>   <span class="token number">930.</span>    <span class="token number">0.14</span>   <span class="token number">4.25</span> <span class="token number">17.2</span> 
+ <span class="token number">3</span> NonD                 <span class="token number">14</span>         <span class="token number">0.774</span>   <span class="token number">8.67</span>   <span class="token number">3.67</span>  <span class="token number">2.1</span>    <span class="token number">6.25</span>  <span class="token number">8.35</span>
+ <span class="token number">4</span> Dream                <span class="token number">12</span>         <span class="token number">0.806</span>   <span class="token number">1.97</span>   <span class="token number">1.44</span>  <span class="token number">0</span>      <span class="token number">0.9</span>   <span class="token number">1.8</span> 
+ <span class="token number">5</span> Sleep                 <span class="token number">4</span>         <span class="token number">0.935</span>  <span class="token number">10.5</span>    <span class="token number">4.61</span>  <span class="token number">2.6</span>    <span class="token number">8.05</span> <span class="token number">10.4</span> 
+ <span class="token number">6</span> Span                  <span class="token number">4</span>         <span class="token number">0.935</span>  <span class="token number">19.9</span>   <span class="token number">18.2</span>   <span class="token number">2</span>      <span class="token number">6.62</span> <span class="token number">15.1</span> 
+ <span class="token number">7</span> Gest                  <span class="token number">4</span>         <span class="token number">0.935</span> <span class="token number">142.</span>   <span class="token number">147.</span>   <span class="token number">12</span>     <span class="token number">35.8</span>  <span class="token number">79</span>   
+ <span class="token number">8</span> Pred                  <span class="token number">0</span>         <span class="token number">1</span>       <span class="token number">2.87</span>   <span class="token number">1.48</span>  <span class="token number">1</span>      <span class="token number">2</span>     <span class="token number">3</span>   
+ <span class="token number">9</span> Exp                   <span class="token number">0</span>         <span class="token number">1</span>       <span class="token number">2.42</span>   <span class="token number">1.60</span>  <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">2</span>   
+<span class="token number">10</span> Danger                <span class="token number">0</span>         <span class="token number">1</span>       <span class="token number">2.61</span>   <span class="token number">1.44</span>  <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">2</span>   
+      p75   p100 hist 
+ <span class="token operator">*</span>  <span class="token operator">&lt;</span>dbl<span class="token operator">&gt;</span>  <span class="token operator">&lt;</span>dbl<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>chr<span class="token operator">&gt;</span>
+ <span class="token number">1</span>  <span class="token number">48.2</span>   <span class="token number">6654</span>  ▇▁▁▁▁
+ <span class="token number">2</span>  <span class="token number">166</span>    <span class="token number">5712</span>  ▇▁▁▁▁
+ <span class="token number">3</span>  <span class="token number">11</span>     <span class="token number">17.9</span>  ▅▇▆▃▂
+ <span class="token number">4</span>  <span class="token number">2.55</span>   <span class="token number">6.6</span>   ▇▇▃▁▁
+ <span class="token number">5</span>  <span class="token number">13.2</span>   <span class="token number">19.9</span>  ▅▅▇▃▃
+ <span class="token number">6</span>  <span class="token number">27.8</span>   <span class="token number">100</span>   ▇▃▁▁▁
+ <span class="token number">7</span>  <span class="token number">208.</span>   <span class="token number">645</span>   ▇▃▁▁▁
+ <span class="token number">8</span>   <span class="token number">4</span>       <span class="token number">5</span>   ▇▇▆▃▇
+ <span class="token number">9</span>   <span class="token number">4</span>       <span class="token number">5</span>   ▇▃▁▂▃
+<span class="token number">10</span>   <span class="token number">4</span>       <span class="token number">5</span>   ▇▆▅▅▃
+</code></pre><p>注意，如果skimr包安不上，提示：<br>
+<img src="image-3.png" alt="alt text"><br>
+请使用句子：install.packages("skimr",type = 'binary')</p>
+<p>查看数据集中每一列的缺失比例：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>miss.prop <span class="token operator">&lt;-</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">{</span>sum<span class="token punctuation">(</span>is.na<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span>length<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">}</span> <span class="token comment">#编一个计算缺失值比例函数</span>
+apply<span class="token punctuation">(</span>dt<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span>miss.prop<span class="token punctuation">)</span> <span class="token comment">#用上面的函数计算每一列</span>
+barplot<span class="token punctuation">(</span>apply<span class="token punctuation">(</span>dt<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span>miss.prop<span class="token punctuation">)</span><span class="token punctuation">,</span>ylim <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>ylab <span class="token operator">=</span> <span class="token string">'prop'</span><span class="token punctuation">)</span> <span class="token comment">#画个图，复习之前讲的直条图</span>
+
+   BodyWgt   BrainWgt       NonD      Dream      Sleep       Span 
+<span class="token number">0.00000000</span> <span class="token number">0.00000000</span> <span class="token number">0.22580645</span> <span class="token number">0.19354839</span> <span class="token number">0.06451613</span> <span class="token number">0.06451613</span> 
+      Gest       Pred        Exp     Danger 
+<span class="token number">0.06451613</span> <span class="token number">0.00000000</span> <span class="token number">0.00000000</span> <span class="token number">0.00000000</span>
+</code></pre><p><img src="image-4.png" alt="alt text"></p>
+<h2 id="5-判断缺失的类型">5 判断缺失的类型 </h2>
+<p>这一步主要是通过列表、绘图、计算相关性来分析不同变量的缺失值是与自身取值有关，还是与其它变量取值有关。从而判断缺失类型是MCAR、MAR，还是MANR。</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>library<span class="token punctuation">(</span>mice<span class="token punctuation">)</span>
+md.pattern<span class="token punctuation">(</span>dt<span class="token punctuation">)</span>
+
+   BodyWgt BrainWgt Pred Exp Danger Sleep Span Gest Dream NonD   
+<span class="token number">42</span>       <span class="token number">1</span>        <span class="token number">1</span>    <span class="token number">1</span>   <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">1</span>    <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">1</span>  <span class="token number">0</span>
+<span class="token number">9</span>        <span class="token number">1</span>        <span class="token number">1</span>    <span class="token number">1</span>   <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">1</span>    <span class="token number">1</span>     <span class="token number">0</span>    <span class="token number">0</span>  <span class="token number">2</span>
+<span class="token number">3</span>        <span class="token number">1</span>        <span class="token number">1</span>    <span class="token number">1</span>   <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">1</span>    <span class="token number">0</span>     <span class="token number">1</span>    <span class="token number">1</span>  <span class="token number">1</span>
+<span class="token number">2</span>        <span class="token number">1</span>        <span class="token number">1</span>    <span class="token number">1</span>   <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">0</span>    <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">1</span>  <span class="token number">1</span>
+<span class="token number">1</span>        <span class="token number">1</span>        <span class="token number">1</span>    <span class="token number">1</span>   <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">0</span>    <span class="token number">1</span>     <span class="token number">0</span>    <span class="token number">0</span>  <span class="token number">3</span>
+<span class="token number">1</span>        <span class="token number">1</span>        <span class="token number">1</span>    <span class="token number">1</span>   <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">0</span>    <span class="token number">0</span>     <span class="token number">1</span>    <span class="token number">1</span>  <span class="token number">2</span>
+<span class="token number">2</span>        <span class="token number">1</span>        <span class="token number">1</span>    <span class="token number">1</span>   <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">0</span>    <span class="token number">1</span>    <span class="token number">1</span>     <span class="token number">1</span>    <span class="token number">0</span>  <span class="token number">2</span>
+<span class="token number">2</span>        <span class="token number">1</span>        <span class="token number">1</span>    <span class="token number">1</span>   <span class="token number">1</span>      <span class="token number">1</span>     <span class="token number">0</span>    <span class="token number">1</span>    <span class="token number">1</span>     <span class="token number">0</span>    <span class="token number">0</span>  <span class="token number">3</span>
+         <span class="token number">0</span>        <span class="token number">0</span>    <span class="token number">0</span>   <span class="token number">0</span>      <span class="token number">0</span>     <span class="token number">4</span>    <span class="token number">4</span>    <span class="token number">4</span>    <span class="token number">12</span>   <span class="token number">14</span> <span class="token number">38</span>
+</code></pre><p><img src="image-5.png" alt="alt text"></p>
+<p>这个表和图这么解释：</p>
+<ul>
+<li>缺失值都是集中在Sleep Span Gest Dream NonD这五个变量上</li>
+<li>最左边一列数表示有42个完整个案，9个个案同时缺Dream NonD，3个个案缺Span...</li>
+<li>最右边一列表示缺0个变量的个案，缺2个变量的个案，缺1个变量的个案...</li>
+</ul>
+<p>接下来继续看看缺失的数量和模式：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>library<span class="token punctuation">(</span>VIM<span class="token punctuation">)</span>
+aggr<span class="token punctuation">(</span>dt<span class="token punctuation">)</span>
+</code></pre><p><img src="image-6.png" alt="alt text"></p>
+<p>左边这个图表示每个变量缺失值的数量，右边表示各种缺失模式所占的比例。</p>
+<p>接下来研究缺失值之间的关系：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>library<span class="token punctuation">(</span>VIM<span class="token punctuation">)</span>
+dev.new<span class="token punctuation">(</span>noRStudioGD <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">)</span> <span class="token comment">#关闭RStudio的绘图，要不然没法和图交互</span>
+matrixplot<span class="token punctuation">(</span>dt<span class="token punctuation">)</span>
+</code></pre><p><img src="image-7.png" alt="alt text"></p>
+<p>红色代表缺失值，每个变量的大小从黑到白表示，我们点击NonD列，缺失值会聚在一起，可以看到Sleep Dream NonD三个变量缺失值都是一起出现的，但是和别的变量的变化似乎没有明显的联系。</p>
+<p>接下来研究具体两个变量之间缺失值的关系：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>library<span class="token punctuation">(</span>VIM<span class="token punctuation">)</span>
+marginplot<span class="token punctuation">(</span>dt<span class="token punctuation">[</span>c<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment">#这个函数只接受二维数据框</span>
+</code></pre><p><img src="image-8.png" alt="alt text"></p>
+<p>首先可以看出，Gest和Dream是负相关。以Dream变量为例，四个红点指的是Gest缺失值对应的Dream取值，淡蓝色箱图是剔除四个缺失值时Dream的分布，共58个数；红色箱图是四个缺失值对应的Dream的分布。可以看到四个Gest缺失值集中在Dream取值较高的一侧。（说明白这两个箱图就费了我不少时间图片，主要是书解释的不清楚，sleep数据共62个个案，以下就是红色箱图对应的数据）<br>
+<img src="image-9.png" alt="alt text"></p>
+<p>绘制A和B两个变量的marginplot图，若一个A变量的两个箱线图分布接近，可认为B的缺失与A关系不大。</p>
+<p>进一步，我们可以绘制所有变量的两两缺失值关系矩阵，效果如下：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>marginmatrix<span class="token punctuation">(</span>dt<span class="token punctuation">)</span>
+</code></pre><p><img src="image-10.png" alt="alt text"></p>
+<p>以上图看起来很困难，我们还可以制作缺失值的相关性矩阵观察缺失值间的关系：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>x<span class="token operator">=</span>as.data.frame<span class="token punctuation">(</span>abs<span class="token punctuation">(</span>is.na<span class="token punctuation">(</span>dt<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">#制作缺失值的影子矩阵</span>
+y<span class="token operator">=</span>x<span class="token punctuation">[</span>which<span class="token punctuation">(</span>apply<span class="token punctuation">(</span>x<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span>sum<span class="token punctuation">)</span><span class="token operator">&gt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token comment">#摘出有缺失值的变量</span>
+cor<span class="token punctuation">(</span>y<span class="token punctuation">)</span> <span class="token comment">#计算相关性矩阵</span>
+
+             NonD       Dream       Sleep        Span        Gest
+NonD   <span class="token number">1.00000000</span>  <span class="token number">0.90711474</span>  <span class="token number">0.48626454</span>  <span class="token number">0.01519577</span> <span class="token operator">-</span><span class="token number">0.14182716</span>
+Dream  <span class="token number">0.90711474</span>  <span class="token number">1.00000000</span>  <span class="token number">0.20370138</span>  <span class="token number">0.03752394</span> <span class="token operator">-</span><span class="token number">0.12865350</span>
+Sleep  <span class="token number">0.48626454</span>  <span class="token number">0.20370138</span>  <span class="token number">1.00000000</span> <span class="token operator">-</span><span class="token number">0.06896552</span> <span class="token operator">-</span><span class="token number">0.06896552</span>
+Span   <span class="token number">0.01519577</span>  <span class="token number">0.03752394</span> <span class="token operator">-</span><span class="token number">0.06896552</span>  <span class="token number">1.00000000</span>  <span class="token number">0.19827586</span>
+Gest  <span class="token operator">-</span><span class="token number">0.14182716</span> <span class="token operator">-</span><span class="token number">0.12865350</span> <span class="token operator">-</span><span class="token number">0.06896552</span>  <span class="token number">0.19827586</span>  <span class="token number">1.00000000</span>
+</code></pre><p>以上代码中，第一句x=as.data.frame(abs(<a href="http://is.na">is.na</a>(dt)))是让数据转换成这样：1表示缺失，0表示存在。以上可以看出，NonD与Dream总是一起缺失。<br>
+<img src="image-11.png" alt="alt text"></p>
+<p>最后，再计算含缺失值变量与所有变量之间的关系：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>cor<span class="token punctuation">(</span>dt<span class="token punctuation">,</span>y<span class="token punctuation">,</span>use<span class="token operator">=</span><span class="token string">"pairwise.complete.obs"</span><span class="token punctuation">)</span> <span class="token comment">#每对变量之间的相关性或协方差是使用对这些变量的所有完整观测值对计算</span>
+
+                NonD       Dream        Sleep        Span        Gest
+BodyWgt   <span class="token number">0.22682614</span>  <span class="token number">0.22259108</span>  <span class="token number">0.001684992</span> <span class="token operator">-</span><span class="token number">0.05831706</span> <span class="token operator">-</span><span class="token number">0.05396818</span>
+BrainWgt  <span class="token number">0.17945923</span>  <span class="token number">0.16321105</span>  <span class="token number">0.007859438</span> <span class="token operator">-</span><span class="token number">0.07921370</span> <span class="token operator">-</span><span class="token number">0.07332961</span>
+NonD              <span class="token keyword keyword-NA">NA</span>          <span class="token keyword keyword-NA">NA</span>           <span class="token keyword keyword-NA">NA</span> <span class="token operator">-</span><span class="token number">0.04314514</span> <span class="token operator">-</span><span class="token number">0.04553485</span>
+Dream    <span class="token operator">-</span><span class="token number">0.18895206</span>          <span class="token keyword keyword-NA">NA</span> <span class="token operator">-</span><span class="token number">0.188952059</span>  <span class="token number">0.11699247</span>  <span class="token number">0.22774685</span>
+Sleep    <span class="token operator">-</span><span class="token number">0.08023157</span> <span class="token operator">-</span><span class="token number">0.08023157</span>           <span class="token keyword keyword-NA">NA</span>  <span class="token number">0.09638044</span>  <span class="token number">0.03976464</span>
+Span      <span class="token number">0.08336361</span>  <span class="token number">0.05981377</span>  <span class="token number">0.005238852</span>          <span class="token keyword keyword-NA">NA</span> <span class="token operator">-</span><span class="token number">0.06527277</span>
+Gest      <span class="token number">0.20239201</span>  <span class="token number">0.05140232</span>  <span class="token number">0.159701523</span> <span class="token operator">-</span><span class="token number">0.17495305</span>          <span class="token keyword keyword-NA">NA</span>
+Pred      <span class="token number">0.04758438</span> <span class="token operator">-</span><span class="token number">0.06834378</span>  <span class="token number">0.202462711</span>  <span class="token number">0.02313860</span> <span class="token operator">-</span><span class="token number">0.20101655</span>
+Exp       <span class="token number">0.24546836</span>  <span class="token number">0.12740768</span>  <span class="token number">0.260772984</span> <span class="token operator">-</span><span class="token number">0.19291879</span> <span class="token operator">-</span><span class="token number">0.19291879</span>
+Danger    <span class="token number">0.06528387</span> <span class="token operator">-</span><span class="token number">0.06724755</span>  <span class="token number">0.208883617</span> <span class="token operator">-</span><span class="token number">0.06666498</span> <span class="token operator">-</span><span class="token number">0.20443928</span>
+Warning message<span class="token operator">:</span>
+In cor<span class="token punctuation">(</span>dt<span class="token punctuation">,</span> y<span class="token punctuation">,</span> use <span class="token operator">=</span> <span class="token string">"pairwise.complete.obs"</span><span class="token punctuation">)</span> <span class="token operator">:</span> 标准差为零
+</code></pre><p>经过以上分析，已经可以看出NonD的缺失与BodyWgt、Gest、Exp有关，肯定不算完全随机缺失。</p>
+<h2 id="总结">总结 </h2>
+<p>本次我们学习了R语言中缺失值分析的方法，从以上可以看出缺失值分析是比较复杂的，要有丰富的经验才能操作，毕竟很多时候你很难确定缺失的数据到底是怎么样的。<br>
+总的来说，识别缺失数据的数量、分布和模式都为了下一步如何处理做准备，搞清楚：<br>
+1.缺失数据的量。<br>
+2.缺失数据相关性，从而判断缺失是否随机产生。<br>
+如果没有明显的证据，一般认缺失是MCAR或MAR。</p>
+<h2 id="6-缺失值的删除和填充">6 缺失值的删除和填充 </h2>
+<p>处理缺失值需要首先考察缺失的类型和数量，以下由易到难介绍各种处理方法。</p>
+<ul>
+<li>删除法：</li>
+</ul>
+<p>完全随机缺失且缺失值数量不大（&lt;5%），可以删除这些缺失值所在的个案。R语言中缺失值处理函数na.omit( )对应这种操作，又叫行删除。<br>
+如果缺失值集中在某些变量上，且该变量不是关键变量，可以考虑删除该变量。</p>
+<ul>
+<li>简单填补法</li>
+</ul>
+<p>数值变量填充用：平均数、中位数、众数<br>
+分类变量填充用：众数<br>
+不推荐该方法，会低估整体数据的变异水平。</p>
+<ul>
+<li>复杂填补法<br>
+回归估计法：以含缺失值的变量为应变量，其它变量为自变量，先用无缺失的数据构建回归方程，再用全部数据构建回归方程，用方程的预测值作为缺失值进行迭代，直至两方程预测值基本一致。该方法会低估整体数据变异水平。</li>
+</ul>
+<p>期望最大化法：主要通过EM估计。先利用已有信息求缺失数据的期望值。在假定缺失值被代替的基础上，做极大似然估计。进行迭代直至收敛，以最终缺失数据的期望值作为其估计值。</p>
+<p>多重填补法：根据缺失值的先验分布为每个缺失值填补m个值，构造m个完整数据集，然后采用相应的完全数据分析法，对每个填补后的样本进行分析，综合m次分析结果，得到未知参数的估计。</p>
+<p>最后，建议进行填充前和填充的重复分析，当重复分析结果差异大，应查找原因评估结果，或考虑同时报告两个结果。</p>
+<p>下面我们重点来谈多重填补方法。</p>
+<h2 id="7-多重填补方法mi">7 多重填补方法（MI） </h2>
+<p>我们这里介绍的多重填补法主要使用经典的mice包。mice是Multivariate Imputation by Chained Equations的缩写，该包可以估算连续、二元、无序分类和有序分类数据，同时还能生成许多诊断图来检查填补的质量。下面是关于多重填补过程的图示：<br>
+<img src="image-12.png" alt="alt text"></p>
+<p>mice包的主要函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mice()</td>
+<td>填充缺失值m次</td>
+</tr>
+<tr>
+<td>with()</td>
+<td>检验填好的数据集</td>
+</tr>
+<tr>
+<td>pool()</td>
+<td>参数估计</td>
+</tr>
+<tr>
+<td>complete()</td>
+<td>导出填好的数据</td>
+</tr>
+<tr>
+<td>ampute()</td>
+<td>生成缺失数据</td>
+</tr>
+<tr>
+<td>mice包的多重填补的过程分为3步：缺失值估计→效果检验→结果整合。我们重点介绍一下填充函数mice( )的参数：</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>mice<span class="token punctuation">(</span>
+  data<span class="token punctuation">,</span> <span class="token comment">#数据</span>
+  m <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token comment">#构建数据集的数量，默认5</span>
+  method <span class="token operator">=</span> <span class="token keyword keyword-NULL">NULL</span><span class="token punctuation">,</span> <span class="token comment">#指定数据中每一列的插补方法</span>
+  visitSequence <span class="token operator">=</span> <span class="token keyword keyword-NULL">NULL</span><span class="token punctuation">,</span> <span class="token comment">#指定采样器一次迭代期间输入的块。属于同一块的所有变量都被估算。</span>
+  defaultMethod <span class="token operator">=</span> c<span class="token punctuation">(</span><span class="token string">"pmm"</span><span class="token punctuation">,</span> <span class="token string">"logreg"</span><span class="token punctuation">,</span> <span class="token string">"polyreg"</span><span class="token punctuation">,</span> <span class="token string">"polr"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">#默认填充方法</span>
+  maxit <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token comment">#迭代次数，数字越大出结果越慢</span>
+  printFlag <span class="token operator">=</span> <span class="token boolean">TRUE</span><span class="token punctuation">,</span> <span class="token comment">#是不是输出计算过程</span>
+  seed <span class="token operator">=</span> <span class="token keyword keyword-NA">NA</span><span class="token punctuation">,</span> <span class="token comment">#指定这个你才能复现填充额结果</span>
+  <span class="token ellipsis">...</span>
+<span class="token punctuation">)</span>
+</code></pre><p>mice包能通过对填充方法的设置实现多种填充方法，包括随机森林、lasso回归，贝叶斯方法等等，详见mice包的官方文档。</p>
+<h2 id="8-实际操作">8 实际操作 </h2>
+<p>我们还是使用上一次用过VIM包中的sleep数据演示：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>dt<span class="token operator">=</span>VIM<span class="token operator">::</span>sleep <span class="token comment">#调用VIM包中的sleep数据集</span>
+DataExplorer<span class="token operator">::</span>plot_missing<span class="token punctuation">(</span>dt<span class="token punctuation">)</span> <span class="token comment">#绘制缺失值的比例</span>
+</code></pre><p><img src="image-13.png" alt="alt text"></p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>library<span class="token punctuation">(</span>mice<span class="token punctuation">)</span>
+imp<span class="token operator">=</span>mice<span class="token punctuation">(</span>dt<span class="token punctuation">,</span>seed<span class="token operator">=</span><span class="token number">2022</span><span class="token punctuation">)</span> <span class="token comment">#设置种子为2022，才能复现相同的结果</span>
+fit<span class="token operator">=</span>with<span class="token punctuation">(</span>imp<span class="token punctuation">,</span>lm<span class="token punctuation">(</span>Dream<span class="token operator">~</span>Span<span class="token operator">+</span>Gest<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">#with()函数指定对每个完整数据指定的模型</span>
+<span class="token comment">#lm(Dream~Span+Gest)指定应用线性回归模型填充，Dream是因变量，Span和Gest是自变量</span>
+pooled<span class="token operator">=</span>pool<span class="token punctuation">(</span>fit<span class="token punctuation">)</span> <span class="token comment">#pool()函数将5个分析结果整合为一组结果，并用最终模型的标准误和p值反映由于缺失值和多重插补而产生的不确定性</span>
+summary<span class="token punctuation">(</span>pooled<span class="token punctuation">)</span> <span class="token comment">#展示填充后Span+Gest与Dream的回归模型参数</span>
+
+         term     estimate   std.error  statistic       df      p.value
+<span class="token number">1</span> <span class="token punctuation">(</span>Intercept<span class="token punctuation">)</span>  <span class="token number">2.535499874</span> <span class="token number">0.245865749</span> <span class="token number">10.3125380</span> <span class="token number">53.92803</span> <span class="token number">2.309264e-14</span>
+<span class="token number">2</span>        Span <span class="token operator">-</span><span class="token number">0.007824392</span> <span class="token number">0.011971699</span> <span class="token operator">-</span><span class="token number">0.6535741</span> <span class="token number">44.59539</span> <span class="token number">5.167422e-01</span>
+<span class="token number">3</span>        Gest <span class="token operator">-</span><span class="token number">0.003503465</span> <span class="token number">0.001519451</span> <span class="token operator">-</span><span class="token number">2.3057440</span> <span class="token number">39.60264</span> <span class="token number">2.644456e-02</span>
+</code></pre><p>这里Span的P值&gt;0.05，Gest的P值&lt;0.05，提示控制Gest时，Span与Dream无显著性关联。<br>
+下面这三个句子都可以展示具体的填充细节，我就不把运行结果列上了：</p>
+<pre data-role="codeBlock" data-info="R" class="language-r R"><code>imp <span class="token comment">#运行这一句可以显示填充的具体情况，包括填充方法，预测矩阵</span>
+imp<span class="token operator">$</span>imp<span class="token operator">$</span>NonD <span class="token comment">#这一句展示具体的填充值</span>
+complete<span class="token punctuation">(</span>imp<span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment">#这一句将输出m个填好的数据集当中的第二个</span>
+</code></pre><p>以上我们展示了使用R语言中的mice包进行多重填补的方法和过程。因为填充过程涉及运算，所以数据集越大，耗时越多。</p>
+<p>mice包的用法关键在于设置不同的填充方法进行填充，以下我们展示一部分方法的名称、适用情况和计算方法：<br>
+<img src="image-14.png" alt="alt text"></p>
+<h2 id="总结一下">总结一下 </h2>
+<p>除mice包以外，R语言能处理缺失值的包非常多。《R语言实战》这本书介绍了不下10个应对各种模型和情况下的缺失值处理包。不过仅mice这一个包的内置方法之多，也足够我们日常学习使用了。</p>
+<h1 id="参考资料">参考资料 </h1>
+<p>1.<a href="https://mp.weixin.qq.com/s/hD6NunVdiIbi-QT4SVMDww">R语言数据预处理：缺失值的处理（上）_冰山烤串串_统计分析与数据挖掘</a><br>
+2.<a href="https://mp.weixin.qq.com/s/UQLhIUV12U1ryQtyv4uluw">R语言数据预处理：缺失值的处理（中）_冰山烤串串_统计分析与数据挖掘</a><br>
+3.<a href="https://mp.weixin.qq.com/s/pr723N71Hq57HGfndZc1tA">R语言数据预处理：缺失值的处理（下）_冰山烤串串_统计分析与数据挖掘</a></p>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

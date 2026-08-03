@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>研究区概况绘制 · 学术写作</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#1c1c1e;--muted:#6b7280;--accent:#9b7ae8;--heading:#d4a5d8;--shadow:0 4px 24px rgba(0,0,0,.06);--font:'DM Sans','Noto Sans SC',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:860px;margin:0 auto;padding:28px 20px 64px}
+.top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.chip{display:inline-flex;padding:9px 16px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);color:var(--muted);font-size:.88rem;font-weight:500}
+.chip:hover{color:var(--text)}
+.article{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:36px 40px 44px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--heading);margin-bottom:10px}
+h1{font-size:1.65rem;font-weight:700;letter-spacing:-.03em;margin-bottom:8px;line-height:1.3}
+.meta{color:var(--muted);font-size:.88rem;margin-bottom:24px}
+h2{font-size:1.15rem;margin:26px 0 10px}
+p,li{color:#374151;font-size:.98rem;margin-bottom:10px}
+ul{padding-left:1.2em;margin-bottom:14px}
+.figure{margin:18px 0 10px;border-radius:16px;overflow:hidden;border:1px solid #eceef2;background:#fafafa}
+.figure img{width:100%;display:block}
+.caption{color:#9ca3af;font-size:.86rem;margin-bottom:18px}
+.checklist{background:#f8f5ff;border:1px solid #eadfff;border-radius:16px;padding:16px 18px;margin:16px 0}
+.checklist li{margin-bottom:6px}
+@media(max-width:640px){.article{padding:24px 18px 32px}h1{font-size:1.35rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="chip" href="../../notes.html#study-area-map">← 返回笔记</a>
+    <a class="chip" href="../files/%E4%B9%8C%E5%85%B0%E4%B9%8C%E8%8B%8F%E5%86%9C%E4%B8%9A%E6%B0%94%E8%B1%A1%E7%AB%99%E4%BD%8D%E7%BD%AE%E5%9B%BE.png" download>下载示例图</a>
+    <a class="chip" href="sci-writing-framework.html">SCI 写作框架 →</a>
+  </div>
+
+  <article class="article">
+    <div class="eyebrow">学术写作 / 研究区概况绘制</div>
+    <h1>研究区概况图怎么画</h1>
+    <p class="meta">示例：乌兰乌苏农业气象站位置图 · 整理于 2025-03</p>
+
+    <p>SCI 论文中「Study Area / 研究区概况」图通常要同时交代<strong>宏观区位</strong>与<strong>局地细节</strong>。下面以玛纳斯河流域—乌兰乌苏农业气象站示意图为例，拆解常见要素。</p>
+
+    <div class="figure">
+      <img src="../files/%E4%B9%8C%E5%85%B0%E4%B9%8C%E8%8B%8F%E5%86%9C%E4%B8%9A%E6%B0%94%E8%B1%A1%E7%AB%99%E4%BD%8D%E7%BD%AE%E5%9B%BE.png" alt="乌兰乌苏农业气象站位置图">
+    </div>
+    <p class="caption">图1 乌兰乌苏农业气象站位置 / Fig. 1 Location of the Wulanwusu Agrometeorological Station</p>
+
+    <h2>1. 双尺度布局</h2>
+    <ul>
+      <li><strong>左上小图（Inset）</strong>：给出更大区域背景（如天山北坡），并用色块标出玛纳斯河流域，虚线引出到主图。</li>
+      <li><strong>右侧主图</strong>：放大研究区，展示地形/土地利用与站点精确位置。</li>
+    </ul>
+
+    <h2>2. 主图信息层</h2>
+    <ul>
+      <li><strong>研究区边界</strong>：黄色闭合线勾勒范围。</li>
+      <li><strong>分区标注</strong>：荒漠区 / 绿洲区 / 山区（Desert / Oasis / Mountain），中英对照。</li>
+      <li><strong>关键点</strong>：红色三角标注乌兰乌苏气象站，落在绿洲区。</li>
+      <li><strong>底图</strong>：卫星影像或高程渲染，便于理解地表格局。</li>
+    </ul>
+
+    <h2>3. 必备制图要素</h2>
+    <div class="checklist">
+      <ul>
+        <li>经纬度边框与刻度</li>
+        <li>比例尺（小图、主图可分别给出）</li>
+        <li>指北或默认上北下南并保持一致</li>
+        <li>图例：流域、山脉范围、站点符号、高程色带（示例：174–5142 m）</li>
+        <li>中英图题（Fig. x …）</li>
+      </ul>
+    </div>
+
+    <h2>4. 写作时可对应的文字要点</h2>
+    <p>图做好后，正文 Study Area 段落通常依次写清：行政区/流域归属 → 经纬度范围 → 地形与气候背景 → 分区特征（荒漠—绿洲—山地）→ 观测站位置与代表性 → 为何选择该区。</p>
+
+    <h2>5. 制作建议</h2>
+    <ul>
+      <li>常用工具：ArcGIS / QGIS + Illustrator/CorelDRAW 精修标注。</li>
+      <li>分辨率按目标期刊要求导出（常见 300–600 dpi）。</li>
+      <li>颜色兼顾打印灰度可辨：边界、站点不要只靠相近色差。</li>
+      <li>避免信息过载：小图只负责「在哪」，主图负责「长什么样、点在哪」。</li>
+    </ul>
+  </article>
+</div>
+</body>
+</html>

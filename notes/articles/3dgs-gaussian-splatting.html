@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高斯泼溅 3DGS · 三维建模</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#1c1c1e;--muted:#6b7280;--accent:#9b7ae8;--heading:#d4a5d8;--shadow:0 4px 24px rgba(0,0,0,.06);--font:'DM Sans','Noto Sans SC',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:820px;margin:0 auto;padding:28px 20px 64px}
+.top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.chip{display:inline-flex;padding:9px 16px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);color:var(--muted);font-size:.88rem;font-weight:500}
+.chip:hover{color:var(--text)}
+.article{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:36px 40px 44px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--heading);margin-bottom:10px}
+h1{font-size:1.6rem;font-weight:700;margin-bottom:8px;line-height:1.3}
+.meta{color:var(--muted);font-size:.88rem;margin-bottom:22px}
+h2{font-size:1.12rem;margin:26px 0 10px}
+p,li{color:#374151;font-size:.98rem;margin-bottom:10px}
+ul{padding-left:1.2em;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;margin:14px 0 18px;font-size:.88rem}
+th,td{border:1px solid #eceef2;padding:8px 10px;vertical-align:top;text-align:left}
+th{background:#f8f5ff;color:#5b21b6}
+.figure{margin:16px 0;border-radius:14px;overflow:hidden;border:1px solid #eceef2}
+.figure img{width:100%;display:block}
+.caption{color:#9ca3af;font-size:.84rem;margin-bottom:14px}
+.ref{margin-top:22px;padding-top:14px;border-top:1px solid #eceef2;font-size:.86rem;color:var(--muted)}
+@media(max-width:640px){.article{padding:24px 16px 30px}h1{font-size:1.3rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="chip" href="../../notes.html#3dgs">← 返回笔记</a>
+    <a class="chip" href="../files/%E9%AB%98%E7%BA%A7%E6%B3%BC%E6%BA%9C3DGS.docx" download>下载原 Word</a>
+  </div>
+  <article class="article">
+    <div class="eyebrow">三维建模 / 高斯泼溅 3DGS</div>
+    <h1>高级泼溅 3DGS 笔记</h1>
+    <p class="meta">整理自《高级泼溅3DGS.docx》</p>
+
+    <h2>一、3DGS 简介</h2>
+    <p>3D 高斯泼溅（3D Gaussian Splatting，3DGS）用一组三维高斯基元近似场景几何与外观。它属于隐式几何表达：更强调点与点的关系，而非只记录离散点位。</p>
+    <p>相较传统点云或体素，高斯函数连续性更好（减轻锯齿与空洞），且可微，便于优化，能更好表达几何与外观。</p>
+
+    <h2>二、与点云建模流程对比</h2>
+    <p>二者大体都是：数据采集 → 数据处理 → 建模 → 导出。差别主要在数据处理。3DGS 可用图像、点云、深度图等，但通常先得到点云，再转为高斯点，所需数据量往往更少。</p>
+    <p>高斯初始化是关键步骤，常用 Open3D、COLMAP 等工具。</p>
+
+    <table>
+      <thead><tr><th>环节</th><th>点云建模</th><th>高斯泼溅</th></tr></thead>
+      <tbody>
+        <tr><td>数据采集</td><td>激光扫描</td><td>多视角拍摄 / 激光扫描 / 视频等</td></tr>
+        <tr><td>数据处理</td><td>点云预处理</td><td>以 SfM 等提取稀疏点云</td></tr>
+        <tr><td>建模</td><td>分割分类，转三角网格，再优化</td><td>高斯初始化与参数优化；可微光栅化实时渲染（可 &gt;30 FPS）</td></tr>
+        <tr><td>应用</td><td>导出常用三维格式</td><td>渲染后可导出模型/点云/引擎格式；未渲染仅能导出高斯参数</td></tr>
+      </tbody>
+    </table>
+
+    <h2>三、优缺点对照</h2>
+    <table>
+      <thead><tr><th>维度</th><th>点云建模</th><th>3DGS</th></tr></thead>
+      <tbody>
+        <tr><td>数据量</td><td>完整扫描，数据量大</td><td>多源生成高斯点，量级可约到传统点云的 1/10</td></tr>
+        <tr><td>处理</td><td>相对复杂</td><td>按高斯分布处理，速度较快</td></tr>
+        <tr><td>细节</td><td>精度高，几何细节好</td><td>几何细节能力有限</td></tr>
+        <tr><td>渲染</td><td>一般不强调实时</td><td>单场景可实时渲染</td></tr>
+        <tr><td>兼容性</td><td>与成熟三维软件兼容好</td><td>导出后再进其他软件处理</td></tr>
+        <tr><td>场景规模</td><td>适合大规模可视化</td><td>难支撑 &gt;2 km² 地理场景及 Web 端三维渲染</td></tr>
+        <tr><td>硬件</td><td>显存/内存要求相对略低（文中：内存至少约 32GB）</td><td>要求高：CUDA GPU，内存至少约 128GB</td></tr>
+        <tr><td>优势</td><td>高精度高保真几何</td><td>光线散射、半透明等误差较小</td></tr>
+        <tr><td>落地</td><td>技术成熟、后处理丰富</td><td>实际工程案例仍偏少</td></tr>
+      </tbody>
+    </table>
+
+    <div class="figure"><img src="3dgs/01.png" alt="3DGS 相关示意"></div>
+    <p class="caption">笔记插图 1</p>
+    <div class="figure"><img src="3dgs/02.jpg" alt="3DGS 与 Mesh 对比"></div>
+    <p class="caption">笔记插图 2：3DGS 与 Mesh 效果对比（上为 3DGS）。连续性较好，但数据量受限时清晰度可能不足。</p>
+
+    <h2>小结</h2>
+    <p>若不考虑导出后在其他软件中重建大场景，数据采集、处理与最终效果都要按项目需求与设备条件取舍。新兴技术有优势，成熟路径也仍有竞争力。</p>
+
+    <div class="ref">参考：[1] 浅浅地了解一下高斯泼溅3DGS（嗮嗮 / 好记性烂笔头）</div>
+  </article>
+</div>
+</body>
+</html>

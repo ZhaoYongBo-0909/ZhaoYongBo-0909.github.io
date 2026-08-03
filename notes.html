@@ -24,6 +24,7 @@
   --radius:24px;
   --shadow:0 4px 24px rgba(0,0,0,.06);
   --font:'DM Sans','Noto Sans SC',system-ui,sans-serif;
+  --danger:#e11d48;
 }
 html{scroll-behavior:smooth}
 body{
@@ -37,136 +38,166 @@ body{
 a{color:var(--accent-strong);text-decoration:none}
 a:hover{opacity:.85}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,textarea,select{
+  font-family:inherit;font-size:.92rem;
+  width:100%;padding:10px 12px;
+  border:1.5px solid var(--border);border-radius:12px;
+  background:#fafafa;color:var(--text);outline:none;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{min-height:110px;resize:vertical;line-height:1.5}
+label{display:block;font-size:.8rem;font-weight:600;color:var(--muted-2);margin-bottom:6px}
 
 .wrap{
-  max-width:1100px;
-  margin:0 auto;
-  padding:28px 20px 56px;
+  max-width:1100px;margin:0 auto;padding:28px 20px 56px;
   animation:rise .6s ease both;
 }
-@keyframes rise{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:none}
-}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 .topbar{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  margin-bottom:18px;flex-wrap:wrap;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:14px;flex-wrap:wrap;
 }
 .back{
   display:inline-flex;align-items:center;gap:8px;
   padding:9px 16px;border-radius:999px;
   background:var(--card);box-shadow:var(--shadow);
   color:var(--muted-2);font-size:.9rem;font-weight:500;
-  transition:color .2s,transform .2s;
 }
-.back:hover{color:var(--text);opacity:1;transform:translateY(-1px)}
+.back:hover{color:var(--text);opacity:1}
 .back svg{width:16px;height:16px}
-.top-title{
-  font-size:.78rem;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--heading);
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:999px;
+  background:var(--card);box-shadow:var(--shadow);
+  color:var(--muted-2);font-size:.82rem;font-weight:500;
+}
+.chip:hover{color:var(--text)}
+.storage-tip{
+  margin-bottom:16px;padding:12px 16px;border-radius:14px;
+  background:#fff8eb;border:1px solid #fde68a;
+  color:#92400e;font-size:.84rem;line-height:1.5;
 }
 
 .layout{
-  display:grid;
-  grid-template-columns:260px minmax(0,1fr);
-  gap:18px;
-  align-items:start;
+  display:grid;grid-template-columns:280px minmax(0,1fr);
+  gap:18px;align-items:start;
 }
-
 .dir-card,.notes-card{
-  background:var(--card);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
+  background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
 }
-.dir-card{padding:20px 16px;position:sticky;top:24px}
+.dir-card{padding:18px 14px;position:sticky;top:24px}
 .dir-head{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:0 6px 12px;
+}
+.dir-head h2{
   font-size:.78rem;font-weight:700;letter-spacing:.12em;
   text-transform:uppercase;color:var(--heading);
-  padding:0 8px 12px;
 }
-.dir-list{display:flex;flex-direction:column;gap:6px}
+.icon-btn{
+  width:30px;height:30px;border-radius:10px;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--accent-strong);background:var(--accent-soft);
+  font-size:1.1rem;font-weight:600;line-height:1;
+}
+.icon-btn:hover{filter:brightness(.97)}
+.dir-list{display:flex;flex-direction:column;gap:2px;max-height:70vh;overflow:auto}
+.dir-item{display:flex;align-items:stretch;gap:2px}
 .dir-btn{
-  width:100%;text-align:left;
-  padding:12px 14px;border-radius:14px;
-  color:var(--muted-2);font-size:.92rem;font-weight:500;
+  flex:1;text-align:left;
+  padding:10px 10px;border-radius:12px;
+  color:var(--muted-2);font-size:.9rem;font-weight:500;
   transition:background .2s,color .2s;
 }
 .dir-btn:hover{background:var(--bg);color:var(--text)}
-.dir-btn.active{
-  background:var(--accent-soft);
-  color:var(--accent-strong);
-  font-weight:600;
-}
-.dir-btn .en{
-  display:block;font-size:.72rem;font-weight:500;
-  color:var(--muted);margin-top:2px;letter-spacing:.02em;
-}
+.dir-btn.active{background:var(--accent-soft);color:var(--accent-strong);font-weight:600}
+.dir-btn .en{display:block;font-size:.7rem;font-weight:500;color:var(--muted);margin-top:1px}
 .dir-btn.active .en{color:var(--accent-strong);opacity:.75}
 .dir-count{
-  display:inline-flex;align-items:center;justify-content:center;
-  min-width:22px;height:20px;padding:0 6px;margin-left:8px;
+  display:inline-flex;min-width:20px;height:18px;padding:0 5px;margin-left:6px;
   border-radius:999px;background:rgba(0,0,0,.06);
-  font-size:.7rem;font-weight:600;vertical-align:middle;
+  font-size:.68rem;font-weight:600;align-items:center;justify-content:center;
 }
 .dir-btn.active .dir-count{background:rgba(155,122,232,.2)}
+.twist{
+  width:28px;flex-shrink:0;border-radius:10px;color:var(--muted);
+  font-size:.7rem;display:flex;align-items:center;justify-content:center;
+}
+.twist:hover{background:var(--bg);color:var(--text)}
+.twist.hidden{visibility:hidden}
 
-.notes-card{padding:28px 30px 34px;min-height:480px}
-.notes-head{margin-bottom:8px}
+.notes-card{padding:26px 28px 32px;min-height:480px}
+.notes-toolbar{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:999px;
+  font-size:.84rem;font-weight:600;
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{filter:brightness(.96)}
+.btn-ghost{background:var(--bg);color:var(--muted-2)}
+.btn-ghost:hover{color:var(--text)}
+.btn-danger{background:#fff1f2;color:var(--danger)}
 .notes-label{
   font-size:.78rem;font-weight:700;letter-spacing:.14em;
   text-transform:uppercase;color:var(--heading);
 }
-.notes-title{
-  font-size:1.45rem;font-weight:700;letter-spacing:-.03em;
-  margin:6px 0 4px;
-}
-.notes-desc{
-  color:var(--muted-2);font-size:.95rem;margin-bottom:22px;
-  max-width:56ch;
-}
+.notes-title{font-size:1.4rem;font-weight:700;letter-spacing:-.03em;margin:6px 0 4px}
+.notes-path{font-size:.8rem;color:var(--muted);margin-bottom:8px}
+.notes-desc{color:var(--muted-2);font-size:.95rem;margin-bottom:18px;max-width:56ch}
 .note-list{display:flex;flex-direction:column;gap:14px}
 .note{
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:16px 18px;
-  transition:border-color .2s,box-shadow .2s;
+  border:1px solid var(--border);border-radius:16px;padding:16px 18px;
   animation:fadeIn .35s ease both;
 }
 .note:hover{border-color:#e0d4f5;box-shadow:0 6px 18px rgba(155,122,232,.08)}
-.note-meta{
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-  margin-bottom:6px;
+.note-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.note-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.note-date,.note-tag{
+  font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:6px;
 }
-.note-date{
-  font-size:.72rem;font-weight:600;color:var(--muted);
-  background:#f0f1f4;padding:2px 8px;border-radius:6px;
+.note-date{color:var(--muted);background:#f0f1f4}
+.note-tag{color:var(--accent-strong);background:var(--accent-soft)}
+.note h3{font-size:1.02rem;font-weight:600;margin-bottom:6px}
+.note p{font-size:.9rem;color:var(--muted-2);line-height:1.55;white-space:pre-wrap}
+.note-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.note-link{
+  display:inline-flex;padding:5px 12px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent-strong);
+  font-size:.78rem;font-weight:600;
 }
-.note-tag{
-  font-size:.7rem;font-weight:600;color:var(--accent-strong);
-  background:var(--accent-soft);padding:2px 8px;border-radius:6px;
-}
-.note h3{font-size:1.02rem;font-weight:600;margin-bottom:6px;letter-spacing:-.01em}
-.note p{font-size:.9rem;color:var(--muted-2);line-height:1.55}
-.empty{
-  text-align:center;padding:48px 16px;color:var(--muted);
-  font-size:.95rem;
-}
+.note-link:hover{opacity:1;filter:brightness(.97)}
+.note-del{color:var(--muted);font-size:.78rem;padding:4px 8px;border-radius:8px}
+.note-del:hover{background:#fff1f2;color:var(--danger)}
+.empty{text-align:center;padding:40px 16px;color:var(--muted);font-size:.95rem}
 
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(8px)}
-  to{opacity:1;transform:none}
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(20,20,30,.35);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;z-index:50;
 }
+.modal-backdrop.open{display:flex}
+.modal{
+  width:min(480px,100%);background:var(--card);
+  border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.18);
+  padding:22px 22px 18px;animation:fadeIn .25s ease;
+}
+.modal h3{font-size:1.1rem;margin-bottom:14px}
+.field{margin-bottom:12px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 @media(max-width:820px){
   .layout{grid-template-columns:1fr}
-  .dir-card{position:static;padding:14px}
-  .dir-list{
-    flex-direction:row;overflow-x:auto;gap:8px;
-    padding-bottom:4px;scrollbar-width:none;
-  }
-  .dir-list::-webkit-scrollbar{display:none}
-  .dir-btn{white-space:nowrap;flex-shrink:0;width:auto}
+  .dir-card{position:static}
+  .dir-list{max-height:none;flex-direction:row;overflow-x:auto;gap:6px}
+  .dir-item{flex-direction:column;min-width:150px}
+  .twist{display:none}
   .dir-btn .en{display:none}
   .notes-card{padding:22px 18px 28px;min-height:0}
 }
@@ -179,145 +210,627 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
       返回主页
     </a>
-    <div class="top-title">Research Notes</div>
+    <div class="top-actions">
+      <button type="button" class="chip" id="btn-export">导出 JSON</button>
+      <button type="button" class="chip" id="btn-import">导入 JSON</button>
+      <button type="button" class="chip" id="btn-reset">恢复默认</button>
+      <input type="file" id="import-file" accept="application/json,.json" hidden>
+    </div>
+  </div>
+
+  <div class="storage-tip">
+    网页新建内容存在浏览器 localStorage。<code>notes/local/</code> 为<strong>仅本机库</strong>（gitignore，含「集中教学」），本地自动加载；GitHub 不会上传。
+    其余知识口袋文档在 <code>notes/files/kb/</code>，可随网站推送。说明：<a href="notes/LOCAL.md">notes/LOCAL.md</a>
+    <span id="local-lib-status"></span>
   </div>
 
   <div class="layout">
     <aside class="dir-card">
-      <div class="dir-head">研究方向</div>
-      <div class="dir-list" id="dir-list" role="tablist" aria-label="学术方向"></div>
+      <div class="dir-head">
+        <h2>研究方向</h2>
+        <button type="button" class="icon-btn" id="btn-add-root" title="新建一级方向">+</button>
+      </div>
+      <div class="dir-list" id="dir-list" aria-label="学术方向树"></div>
     </aside>
 
     <main class="notes-card">
-      <div class="notes-head">
-        <div class="notes-label">Notes</div>
-        <h1 class="notes-title" id="notes-title">—</h1>
-        <p class="notes-desc" id="notes-desc"></p>
+      <div class="notes-toolbar">
+        <button type="button" class="btn btn-primary" id="btn-add-note">+ 新建笔记</button>
+        <button type="button" class="btn btn-ghost" id="btn-add-child">+ 子方向</button>
+        <button type="button" class="btn btn-danger" id="btn-del-dir">删除当前方向</button>
       </div>
+      <div class="notes-label">Notes</div>
+      <div class="notes-path" id="notes-path"></div>
+      <h1 class="notes-title" id="notes-title">—</h1>
+      <p class="notes-desc" id="notes-desc"></p>
       <div class="note-list" id="note-list"></div>
     </main>
   </div>
 </div>
 
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3 id="modal-title">新建</h3>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="modal-cancel">取消</button>
+      <button type="button" class="btn btn-primary" id="modal-ok">保存</button>
+    </div>
+  </div>
+</div>
+
+<script src="notes/kb-tree.js"></script>
 <script>
-/**
- * 学术方向笔记数据
- * 新增方向：在 directions 数组末尾追加一个对象即可
- * 新增笔记：在对应方向的 notes 数组中追加条目
- */
-const directions = [
+const STORAGE_KEY = 'zyb-research-notes-v10';
+
+const BASE_DIRECTIONS = [
+  ...(window.KB_TREE ? [window.KB_TREE] : []),
   {
-    id: 'cartography-gis',
-    title: '地图学与 GIS',
-    titleEn: 'Cartography & GIS',
-    description: '地图表达、空间分析与地理信息系统方法相关笔记。',
-    notes: [
+    id: 'radio-exam',
+    title: '无线电考试',
+    titleEn: 'Amateur Radio Exam',
+    description: '业余无线电台操作技术能力验证题库（2025 年版）。',
+    notes: [],
+    children: [
       {
-        title: '空间数据模型梳理',
-        date: '2026-07',
-        tag: '基础',
-        body: '占位笔记：矢量 / 栅格数据模型、拓扑关系与常用坐标系转换要点，待补充正式内容。'
+        id: 'radio-exam-bank',
+        title: '2025 题库 v20250728',
+        titleEn: 'Question Bank',
+        description: '总题库、附图标记，以及 A / B / C 类分册 PDF。',
+        notes: [
+          {
+            id: 'note-radio-all',
+            title: '业余电台操作证书考试题库（全套）',
+            date: '2025-07',
+            tag: '题库',
+            body: '含总题库、总题库附图标记、A/B/C 类题库。可在线打开或下载 PDF。',
+            link: 'notes/articles/radio-exam-bank.html',
+            file: 'notes/files/radio-exam/总题库.pdf'
+          },
+          {
+            id: 'note-radio-a',
+            title: 'A 类题库',
+            date: '2025-07',
+            tag: 'A类',
+            body: 'A 类操作证书考试题库分册。',
+            file: 'notes/files/radio-exam/A类题库.pdf'
+          },
+          {
+            id: 'note-radio-b',
+            title: 'B 类题库',
+            date: '2025-07',
+            tag: 'B类',
+            body: 'B 类操作证书考试题库分册。',
+            file: 'notes/files/radio-exam/B类题库.pdf'
+          },
+          {
+            id: 'note-radio-c',
+            title: 'C 类题库',
+            date: '2025-07',
+            tag: 'C类',
+            body: 'C 类操作证书考试题库分册。',
+            file: 'notes/files/radio-exam/C类题库.pdf'
+          },
+          {
+            id: 'note-radio-figures',
+            title: '总题库附图标记',
+            date: '2025-07',
+            tag: '附图',
+            body: '总题库配套附图与标记说明。',
+            file: 'notes/files/radio-exam/总题库附图标记.pdf'
+          }
+        ],
+        children: []
+      }
+    ]
+  },
+  {
+    id: '3d-modeling',
+    title: '三维建模',
+    titleEn: '3D Modeling',
+    description: '高斯泼溅、数字孪生等相关笔记。',
+    notes: [],
+    children: [
+      {
+        id: '3dgs',
+        title: '高斯泼溅 3DGS',
+        titleEn: '3D Gaussian Splatting',
+        description: '3DGS 原理、与点云建模对比及适用边界。',
+        notes: [
+          {
+            id: 'note-3dgs',
+            title: '高级泼溅 3DGS',
+            date: '2025',
+            tag: '技术',
+            body: '介绍 3DGS 思想，并与点云建模在流程、优缺点、场景规模与硬件要求上对照。',
+            link: 'notes/articles/3dgs-gaussian-splatting.html',
+            file: 'notes/files/高级泼溅3DGS.docx'
+          }
+        ],
+        children: []
       },
       {
-        title: '专题制图表达原则',
-        date: '2026-06',
-        tag: '制图',
-        body: '占位笔记：视觉变量、图例设计与多尺度表达的常见实践，待替换为读书与课程笔记。'
+        id: 'digital-twin',
+        title: '数字孪生',
+        titleEn: 'Digital Twin',
+        description: '数字孪生概念、阶段划分与行业评价。',
+        notes: [],
+        children: [
+          {
+            id: 'digital-twin-eval',
+            title: '01. 评价',
+            titleEn: 'Critique',
+            description: '对数字孪生落地与仿真/动画边界的评论文章笔记。',
+            notes: [
+              {
+                id: 'note-earth2',
+                title: '英伟达 Earth-2 撕开了国内数字孪生的遮羞布',
+                date: '2024-07',
+                tag: '评论',
+                body: '从 Earth-2 谈仿真与动画之别，并梳理数字模型 / 数字影子 / 数字孪生三阶段及国内落地问题。',
+                link: 'notes/articles/earth2-digital-twin.html',
+                file: 'notes/files/英伟达Earth-2撕开了国内数字孪生的遮羞布.docx'
+              }
+            ],
+            children: []
+          }
+        ]
       }
     ]
   },
   {
-    id: 'remote-sensing',
-    title: '遥感与地学信息',
-    titleEn: 'Remote Sensing',
-    description: '遥感影像处理、地物提取与地学信息挖掘相关笔记。',
-    notes: [
+    id: 'academic-writing',
+    title: '学术写作',
+    titleEn: 'Academic Writing',
+    description: 'SCI 结构、研究区制图与论文写作相关笔记（2025-03）。',
+    notes: [],
+    children: [
       {
-        title: '影像预处理流程备忘',
-        date: '2026-05',
-        tag: '流程',
-        body: '占位笔记：辐射校正、大气校正与裁剪镶嵌流程提纲，待补充软件操作与参数记录。'
+        id: 'study-area-map',
+        title: '研究区概况绘制',
+        titleEn: 'Study Area Mapping',
+        description: '研究区区位图、分区标注与制图要素清单。',
+        notes: [
+          {
+            id: 'note-wulanwusu-map',
+            title: '研究区概况图怎么画（乌兰乌苏站示例）',
+            date: '2025-03',
+            tag: '制图',
+            body: '以玛纳斯河流域—乌兰乌苏农业气象站位置图为例，拆解小图/主图、分区、图例与图题等要素。',
+            link: 'notes/articles/study-area-map.html',
+            file: 'notes/files/乌兰乌苏农业气象站位置图.png'
+          }
+        ],
+        children: []
+      },
+      {
+        id: 'sci-framework',
+        title: 'SCI 写作框架',
+        titleEn: 'SCI Writing Framework',
+        description: '论文各部分结构模板长图笔记。',
+        notes: [
+          {
+            id: 'note-sci-framework',
+            title: 'SCI 写作框架长图',
+            date: '2025-03',
+            tag: '框架',
+            body: '原 Word 为多页截图框架，已拆成网页长图便于阅读，并保留 docx 下载。',
+            link: 'notes/articles/sci-writing-framework.html',
+            file: 'notes/files/SCI写作框架.docx'
+          }
+        ],
+        children: []
       }
     ]
   },
   {
-    id: 'eco-geo',
-    title: '生态地理交叉',
-    titleEn: 'Eco-Geography',
-    description: '生态过程与地理空间方法交叉方向的阅读与研究笔记。',
-    notes: [
+    id: 'atmospheric-science',
+    title: '大气科学',
+    titleEn: 'Atmospheric Science',
+    description: '大气过程、气象要素与相关交叉研究笔记。',
+    notes: [],
+    children: [
       {
-        title: '干旱区生态遥感切入点',
-        date: '2026-04',
-        tag: '选题',
-        body: '占位笔记：结合新疆所研究背景，整理可能的交叉选题与数据源清单。'
-      }
-    ]
-  },
-  {
-    id: 'methods-tools',
-    title: '方法与工具',
-    titleEn: 'Methods & Tools',
-    description: '编程、空间库、分析工作流与可复现实验相关笔记。',
-    notes: [
-      {
-        title: '可复现空间分析工作流',
-        date: '2026-03',
-        tag: '工程',
-        body: '占位笔记：数据版本、脚本组织与结果归档约定，便于后续课题复现。'
+        id: 'meteo-concepts',
+        title: '气象要素概念辨析',
+        titleEn: 'Meteorological Concepts',
+        description: '气温、气压、湿度、风、降水等气象要素的概念辨析与笔记。',
+        notes: [
+          {
+            id: 'note-solar-radiation',
+            title: '太阳辐射及相关概念辨析',
+            date: '2025-03',
+            tag: '概念',
+            body: '梳理总辐射、直接辐射、散射辐射及其时空分布，以及短波/长波与地面净辐射等概念。已整理为网页长文，并可下载原 Word。',
+            link: 'notes/articles/solar-radiation.html',
+            file: 'notes/files/太阳辐射及相关概念辨析.doc'
+          }
+        ],
+        children: []
       }
     ]
   }
 ];
 
+function uid(prefix) {
+  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+}
+
+function clone(data) {
+  return JSON.parse(JSON.stringify(data));
+}
+
+function loadState(defaults) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed.directions)) return parsed;
+    }
+  } catch (_) {}
+  return { directions: clone(defaults), activeId: defaults[0]?.id || '' };
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    directions: state.directions,
+    activeId: state.activeId,
+    expanded: [...state.expanded]
+  }));
+}
+
+const state = {
+  directions: [],
+  activeId: '',
+  expanded: new Set()
+};
+
+async function loadLocalCatalog() {
+  try {
+    const res = await fetch('notes/local/catalog.json', { cache: 'no-store' });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.tree || null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function buildDefaults(localTree) {
+  const dirs = clone(BASE_DIRECTIONS);
+  if (localTree) dirs.unshift(localTree);
+  return dirs;
+}
+
+function mergeLocalIntoState(localTree) {
+  if (!localTree) return;
+  const idx = state.directions.findIndex((d) => d.id === localTree.id);
+  if (idx >= 0) state.directions[idx] = clone(localTree);
+  else state.directions.unshift(clone(localTree));
+  state.expanded.add(localTree.id);
+}
+
 const dirList = document.getElementById('dir-list');
 const notesTitle = document.getElementById('notes-title');
 const notesDesc = document.getElementById('notes-desc');
+const notesPath = document.getElementById('notes-path');
 const noteList = document.getElementById('note-list');
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modal-title');
+const modalBody = document.getElementById('modal-body');
+const modalOk = document.getElementById('modal-ok');
+const modalCancel = document.getElementById('modal-cancel');
 
-function renderDirs(activeId) {
-  dirList.innerHTML = directions.map((d) => `
-    <button type="button" class="dir-btn${d.id === activeId ? ' active' : ''}" data-id="${d.id}" role="tab" aria-selected="${d.id === activeId}">
-      ${d.title}<span class="dir-count">${d.notes.length}</span>
-      <span class="en">${d.titleEn}</span>
-    </button>
-  `).join('');
+let modalSubmit = null;
+
+function walk(nodes, fn, parent = null, path = []) {
+  for (const node of nodes) {
+    const p = path.concat(node.title);
+    fn(node, parent, p);
+    if (node.children?.length) walk(node.children, fn, node, p);
+  }
 }
 
-function renderNotes(dir) {
-  notesTitle.textContent = dir.title;
-  notesDesc.textContent = dir.description;
-  if (!dir.notes.length) {
-    noteList.innerHTML = '<div class="empty">该方向暂无笔记，可在 notes.html 的 directions 数据中添加。</div>';
+function findNode(id, nodes = state.directions, parent = null) {
+  for (const node of nodes) {
+    if (node.id === id) return { node, parent, siblings: nodes };
+    if (node.children?.length) {
+      const hit = findNode(id, node.children, node);
+      if (hit) return hit;
+    }
+  }
+  return null;
+}
+
+function countNotes(node) {
+  let n = (node.notes || []).length;
+  for (const c of node.children || []) n += countNotes(c);
+  return n;
+}
+
+function ensureNodeShape(node) {
+  if (!node.notes) node.notes = [];
+  if (!node.children) node.children = [];
+  if (!node.titleEn) node.titleEn = '';
+  if (!node.description) node.description = '';
+}
+
+function renderTree() {
+  const rows = [];
+  function renderLevel(nodes, depth) {
+    for (const node of nodes) {
+      ensureNodeShape(node);
+      const hasKids = node.children.length > 0;
+      const open = state.expanded.has(node.id);
+      const active = node.id === state.activeId;
+      rows.push(`
+        <div class="dir-item" style="padding-left:${depth * 14}px">
+          <button type="button" class="twist${hasKids ? '' : ' hidden'}" data-twist="${node.id}" aria-label="展开/折叠">${hasKids ? (open ? '▾' : '▸') : ''}</button>
+          <button type="button" class="dir-btn${active ? ' active' : ''}" data-id="${node.id}">
+            ${escapeHtml(node.title)}<span class="dir-count">${countNotes(node)}</span>
+            ${node.titleEn ? `<span class="en">${escapeHtml(node.titleEn)}</span>` : ''}
+          </button>
+        </div>
+      `);
+      if (hasKids && open) renderLevel(node.children, depth + 1);
+    }
+  }
+  renderLevel(state.directions, 0);
+  dirList.innerHTML = rows.join('') || '<div class="empty">暂无方向</div>';
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function getPathTitles(id) {
+  let path = [];
+  walk(state.directions, (node, _p, titles) => {
+    if (node.id === id) path = titles;
+  });
+  return path;
+}
+
+function renderNotes() {
+  const hit = findNode(state.activeId);
+  if (!hit) {
+    const first = state.directions[0];
+    if (!first) {
+      notesTitle.textContent = '暂无方向';
+      notesDesc.textContent = '点击左侧 + 新建一级方向。';
+      notesPath.textContent = '';
+      noteList.innerHTML = '';
+      return;
+    }
+    state.activeId = first.id;
+    saveState();
+    return renderAll();
+  }
+  const { node } = hit;
+  ensureNodeShape(node);
+  notesTitle.textContent = node.title;
+  notesDesc.textContent = node.description || '暂无描述';
+  notesPath.textContent = getPathTitles(node.id).join(' / ');
+  if (!node.notes.length) {
+    noteList.innerHTML = '<div class="empty">该方向暂无笔记，点击「新建笔记」添加。</div>';
     return;
   }
-  noteList.innerHTML = dir.notes.map((n, i) => `
-    <article class="note" style="animation-delay:${i * 0.05}s">
-      <div class="note-meta">
-        <span class="note-date">${n.date}</span>
-        ${n.tag ? `<span class="note-tag">${n.tag}</span>` : ''}
+  noteList.innerHTML = node.notes.map((n, i) => `
+    <article class="note" style="animation-delay:${i * 0.04}s">
+      <div class="note-top">
+        <div>
+          <div class="note-meta">
+            <span class="note-date">${escapeHtml(n.date || '')}</span>
+            ${n.tag ? `<span class="note-tag">${escapeHtml(n.tag)}</span>` : ''}
+          </div>
+          <h3>${escapeHtml(n.title)}</h3>
+          <p>${escapeHtml(n.body || '')}</p>
+          ${n.link || n.file ? `<div class="note-links">
+            ${n.link ? `<a class="note-link" href="${escapeHtml(n.link)}">阅读全文</a>` : ''}
+            ${n.file ? `<a class="note-link" href="${escapeHtml(n.file)}" download>下载原文件</a>` : ''}
+          </div>` : ''}
+        </div>
+        <button type="button" class="note-del" data-del-note="${escapeHtml(n.id)}">删除</button>
       </div>
-      <h3>${n.title}</h3>
-      <p>${n.body}</p>
     </article>
   `).join('');
 }
 
-function showDirection(id) {
-  const dir = directions.find((d) => d.id === id) || directions[0];
-  renderDirs(dir.id);
-  renderNotes(dir);
-  history.replaceState(null, '', `#${dir.id}`);
+function renderAll() {
+  renderTree();
+  renderNotes();
+  history.replaceState(null, '', `#${state.activeId}`);
+}
+
+function openModal(title, fieldsHtml, onSubmit) {
+  modalTitle.textContent = title;
+  modalBody.innerHTML = fieldsHtml;
+  modalSubmit = onSubmit;
+  modal.classList.add('open');
+  const first = modalBody.querySelector('input,textarea');
+  if (first) first.focus();
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  modalSubmit = null;
+}
+
+function todayStamp() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
+
+function createDirection(parentId) {
+  openModal(parentId ? '新建子方向' : '新建一级方向', `
+    <div class="field"><label>中文名称</label><input id="f-title" required placeholder="例如：大气科学"></div>
+    <div class="field"><label>英文名称（可选）</label><input id="f-en" placeholder="Atmospheric Science"></div>
+    <div class="field"><label>简介</label><textarea id="f-desc" placeholder="方向说明…"></textarea></div>
+  `, () => {
+    const title = document.getElementById('f-title').value.trim();
+    if (!title) return alert('请填写中文名称');
+    const node = {
+      id: uid('dir'),
+      title,
+      titleEn: document.getElementById('f-en').value.trim(),
+      description: document.getElementById('f-desc').value.trim(),
+      notes: [],
+      children: []
+    };
+    if (parentId) {
+      const hit = findNode(parentId);
+      if (!hit) return;
+      ensureNodeShape(hit.node);
+      hit.node.children.push(node);
+      state.expanded.add(parentId);
+    } else {
+      state.directions.push(node);
+    }
+    state.activeId = node.id;
+    saveState();
+    closeModal();
+    renderAll();
+  });
+}
+
+function createNote() {
+  const hit = findNode(state.activeId);
+  if (!hit) return alert('请先选择一个方向');
+  openModal('新建笔记', `
+    <div class="field"><label>标题</label><input id="f-title" required placeholder="笔记标题"></div>
+    <div class="field"><label>日期</label><input id="f-date" value="${todayStamp()}"></div>
+    <div class="field"><label>标签（可选）</label><input id="f-tag" placeholder="概念 / 方法 / 文献…"></div>
+    <div class="field"><label>正文</label><textarea id="f-body" placeholder="写下你的笔记…"></textarea></div>
+  `, () => {
+    const title = document.getElementById('f-title').value.trim();
+    if (!title) return alert('请填写标题');
+    ensureNodeShape(hit.node);
+    hit.node.notes.unshift({
+      id: uid('note'),
+      title,
+      date: document.getElementById('f-date').value.trim() || todayStamp(),
+      tag: document.getElementById('f-tag').value.trim(),
+      body: document.getElementById('f-body').value.trim()
+    });
+    saveState();
+    closeModal();
+    renderAll();
+  });
 }
 
 dirList.addEventListener('click', (e) => {
+  const twist = e.target.closest('[data-twist]');
+  if (twist) {
+    const id = twist.dataset.twist;
+    if (state.expanded.has(id)) state.expanded.delete(id);
+    else state.expanded.add(id);
+    saveState();
+    renderTree();
+    return;
+  }
   const btn = e.target.closest('.dir-btn');
   if (!btn) return;
-  showDirection(btn.dataset.id);
+  state.activeId = btn.dataset.id;
+  saveState();
+  renderAll();
 });
 
-const initial = location.hash.replace(/^#/, '') || directions[0].id;
-showDirection(initial);
+noteList.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-del-note]');
+  if (!btn) return;
+  const hit = findNode(state.activeId);
+  if (!hit) return;
+  if (!confirm('删除这条笔记？')) return;
+  hit.node.notes = hit.node.notes.filter((n) => n.id !== btn.dataset.delNote);
+  saveState();
+  renderAll();
+});
+
+document.getElementById('btn-add-root').addEventListener('click', () => createDirection(null));
+document.getElementById('btn-add-child').addEventListener('click', () => createDirection(state.activeId));
+document.getElementById('btn-add-note').addEventListener('click', createNote);
+document.getElementById('btn-del-dir').addEventListener('click', () => {
+  const hit = findNode(state.activeId);
+  if (!hit) return;
+  if (!confirm(`删除方向「${hit.node.title}」及其全部子方向与笔记？`)) return;
+  const idx = hit.siblings.findIndex((n) => n.id === hit.node.id);
+  hit.siblings.splice(idx, 1);
+  state.activeId = (hit.parent && hit.parent.id) || (state.directions[0] && state.directions[0].id) || '';
+  saveState();
+  renderAll();
+});
+
+modalCancel.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+modalOk.addEventListener('click', () => { if (modalSubmit) modalSubmit(); });
+
+document.getElementById('btn-export').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify({ directions: state.directions }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `research-notes-${todayStamp()}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById('btn-import').addEventListener('click', () => {
+  document.getElementById('import-file').click();
+});
+document.getElementById('import-file').addEventListener('change', async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (!Array.isArray(data.directions)) throw new Error('格式不正确');
+    state.directions = data.directions;
+    state.activeId = state.directions[0]?.id || '';
+    saveState();
+    renderAll();
+  } catch (err) {
+    alert('导入失败：' + err.message);
+  }
+  e.target.value = '';
+});
+
+document.getElementById('btn-reset').addEventListener('click', async () => {
+  if (!confirm('恢复默认数据？当前浏览器中新建/修改的内容会被覆盖。')) return;
+  const localTree = await loadLocalCatalog();
+  const defaults = buildDefaults(localTree);
+  state.directions = clone(defaults);
+  state.activeId = defaults[0]?.id || '';
+  state.expanded = new Set(defaults.map((d) => d.id).concat(['digital-twin', 'atmospheric-science']));
+  saveState();
+  renderAll();
+});
+
+(async function boot() {
+  const localTree = await loadLocalCatalog();
+  const defaults = buildDefaults(localTree);
+  const status = document.getElementById('local-lib-status');
+  if (status) {
+    status.innerHTML = localTree
+      ? ' <strong style="color:#166534">· 已加载本地库（含集中教学）</strong>'
+      : ' <span style="color:#92400e">· 未检测到本地库 notes/local/catalog.json</span>';
+  }
+
+  const saved = loadState(defaults);
+  state.directions = saved.directions;
+  state.activeId = saved.activeId || defaults[0]?.id || '';
+  state.expanded = new Set(saved.expanded || defaults.map((d) => d.id));
+
+  // Always refresh local tree content when present (so file updates show after reset-less refresh)
+  mergeLocalIntoState(localTree);
+
+  const hashId = location.hash.replace(/^#/, '');
+  if (hashId && findNode(hashId)) state.activeId = hashId;
+  saveState();
+  renderAll();
+})();
 </script>
 </body>
 </html>

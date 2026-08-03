@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>太阳辐射及相关概念辨析 · 学术笔记</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f6f8;--card:#fff;--text:#1c1c1e;--muted:#6b7280;--accent:#9b7ae8;
+  --heading:#d4a5d8;--border:#eceef2;--shadow:0 4px 24px rgba(0,0,0,.06);
+  --font:'DM Sans','Noto Sans SC',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:760px;margin:0 auto;padding:28px 20px 64px}
+.top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 16px;border-radius:999px;background:var(--card);
+  box-shadow:var(--shadow);color:var(--muted);font-size:.88rem;font-weight:500;
+}
+.chip:hover{color:var(--text)}
+.article{
+  background:var(--card);border-radius:24px;box-shadow:var(--shadow);
+  padding:36px 40px 44px;
+}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--heading);margin-bottom:10px}
+h1{font-size:1.7rem;font-weight:700;letter-spacing:-.03em;margin-bottom:8px;line-height:1.3}
+.meta{color:var(--muted);font-size:.88rem;margin-bottom:28px}
+h2{font-size:1.2rem;margin:28px 0 12px;letter-spacing:-.02em}
+h3{font-size:1.02rem;margin:18px 0 8px;color:#374151}
+p{margin-bottom:12px;color:#374151;font-size:.98rem}
+.formula{
+  background:#f8f5ff;border:1px solid #eadfff;border-radius:14px;
+  padding:14px 16px;margin:14px 0 18px;font-weight:600;color:#5b21b6;
+}
+.caption{color:#9ca3af;font-size:.86rem;font-style:italic;margin:6px 0 14px}
+.note-box{
+  margin-top:28px;padding:14px 16px;border-radius:14px;background:#fff8eb;
+  border:1px solid #fde68a;color:#92400e;font-size:.86rem;
+}
+@media(max-width:640px){
+  .article{padding:24px 18px 32px}
+  h1{font-size:1.35rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="chip" href="../../notes.html#meteo-concepts">← 返回笔记</a>
+    <a class="chip" href="../files/%E5%A4%AA%E9%98%B3%E8%BE%90%E5%B0%84%E5%8F%8A%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5%E8%BE%A8%E6%9E%90.doc">下载原 Word</a>
+  </div>
+
+  <article class="article">
+    <div class="eyebrow">大气科学 / 气象要素概念辨析</div>
+    <h1>太阳辐射及相关概念辨析</h1>
+    <p class="meta">整理自个人笔记 · 2025-03 · 含总辐射、直接辐射、散射辐射与地面净辐射</p>
+
+    <p>到达地面的太阳辐射被称为<strong>总辐射</strong>，由两部分组成，即「太阳直接辐射」和「散射辐射」。</p>
+    <p class="formula">总辐射（Q） = 直接辐射（S） + 散射辐射（D）</p>
+
+    <h2>1. 直接辐射</h2>
+    <p>太阳以平行光的形式直接投射到地面上的那部分辐射称为（太阳）直接辐射。其强弱主要取决于<strong>太阳高度角</strong>和<strong>大气透明度</strong>；纬度、海拔、坡度坡向和云量也有直接或间接影响。</p>
+
+    <h3>太阳高度角</h3>
+    <p>太阳光线与水平地面之间的夹角 <em>h</em> 不同，地表单位面积获得的太阳辐射也不同。当 <em>h</em> 越小时，等量太阳辐射散布面积越大，单位面积接收能量越少；同时阳光穿过大气路径更长，大气削弱更强，到达地面的辐射更少。</p>
+    <p class="caption">（原笔记含：太阳光线路径与太阳高度角示意；高度角与散布面积、穿过路径的关系图）</p>
+
+    <h3>大气透明度</h3>
+    <p>大气对太阳辐射的透射程度称为大气透明度。水汽、水汽凝结物和尘埃越多，透明度越差，对太阳辐射的削弱越大，到达地面的太阳辐射相应减少。</p>
+
+    <h3>其他影响因素</h3>
+    <p>除太阳高度角与大气透明度外，还应注意<strong>云量、对流、海拔</strong>。阴天时直接辐射难以到达地表；盛夏午后对流发展，可将水汽和灰尘带到上空，使直接辐射减弱。海拔升高会缩短入射路径、提高大气透明度，从而增强直接辐射。例如青藏高原总辐射很强，主要因为直接辐射较强。</p>
+
+    <h2>2. 散射辐射</h2>
+    <p>太阳辐射被大气散射后，向下到达地面的部分称为散射辐射，亦称「天空辐射」。其强弱同样主要取决于太阳高度角和大气透明度；云量和海拔影响也很大。</p>
+
+    <h3>太阳高度角</h3>
+    <p>散射辐射随太阳高度角增大而增强，与直接辐射一致；高度角越小，散射辐射越弱。阴天所见光线基本为散射光。</p>
+
+    <h3>大气透明度</h3>
+    <p>与直接辐射不同：大气透明度越差，散射质点（颗粒与水分子等）越多，散射辐射越强；反之则弱。天空呈蔚蓝色，是蓝光被选择性散射的结果。</p>
+
+    <h3>其他影响因素</h3>
+    <p>云能强烈增大散射辐射。一般无云时约为 70～140 W/m²，有薄的中云时可达约 420 W/m²。云层不太厚且地面有冰雪时，辐射在云与下垫面之间多次反射，散射可增强；云层很厚、云量很大时，因直接辐射被削弱过多，散射辐射可能比晴天更少。海拔升高、空气变稀、微尘减少，散射辐射通常随之减少。</p>
+
+    <h2>3. 直接辐射与散射辐射的时空分布</h2>
+
+    <h3>直接辐射（时间）</h3>
+    <p>无云时，一天中直接辐射最大值出现在正午，随高度角减小而减小，日出日落为 0。午后对流发展有时会改变影响因素。一年中最大值多在夏季、最小值在冬季；但盛夏水汽与云量增多常使直接辐射减弱较多，月平均最大值常出现在春末夏初而非盛夏。</p>
+
+    <h3>直接辐射（空间）</h3>
+    <p>青藏高原直接辐射年曝辐量为全国最多；四川盆地及周边至长江中下游为低值区，四川盆地为低值中心。西部另有相对低值区：青藏高原东南部与横断山脉迎风坡（云雨多），以及大气混浊度较大的沙漠区（如塔里木盆地）。纬向上随纬度升高而减少，最大值多在北回归线附近。</p>
+
+    <h3>散射辐射（时间）</h3>
+    <p>日、年变化主要取决于太阳高度角，并受云量影响。一天中最大值多在正午前后；一年内夏季大、冬季小。阴天正午最大值可超过晴天正午一倍以上。云的变化常使日、年曲线出现次高/次低值。</p>
+
+    <h3>散射辐射（空间）</h3>
+    <p>年曝辐量大体：低纬 &gt; 高纬，低海拔 &gt; 高海拔，西部干燥区 &gt; 东部湿润区。高值区多在我国东南部（云与气溶胶较多），中心可见于两广丘陵、上海周边、湖北及四川盆地。青藏高原空气洁净、分子散射弱，但总辐射多，散射也相对较多。约 45°N 以北普遍较少。</p>
+    <p class="caption">原笔记还整理了广州、上海、郑州、北京、沈阳、成都、乌鲁木齐、格尔木等站点的年曝辐量年际变化图。</p>
+
+    <h2>4. 总辐射</h2>
+    <p>到达地表的直接辐射与散射辐射之和称为总辐射。影响因素仍包括太阳高度角、大气透明度、纬度、云量、海拔等。云雨偏多地区散射占比往往更大；干燥区则直接辐射占比更大。</p>
+
+    <h3>总辐射的时空分布</h3>
+    <p>晴朗日，总辐射日变化大体与直接辐射一致：夜间为 0，日出后增大，正午最大，午后减小。夏季午后对流云可使最大值偏移到正午前后。由于散射，太阳光线在地平线以下且与地平线夹角大于约 7° 时，总辐射才可为 0。赤道地区一年可有春分、秋分两个最大值；其他地区通常夏季一个最大值、冬季最小值。</p>
+    <p>年总辐射最大值常出现在纬度约 20° 附近而非赤道，因赤道云雨对辐射削弱更强。高值中心分布常与副热带高压带相一致，沙漠与高原尤其明显；非洲东北部因云量最少而突出。</p>
+    <p>中国：年总量最大值在西藏，青海、新疆和黄河流域次之，最低值在四川盆地东南部。除川黔外，大体由东向西增加。西部与海拔关系密切，青藏高原最大，塔里木与准噶尔盆地较小；东部以川黔及长江以南最小，向南、向北增加，内蒙古及华北较大，东北又减小。青藏高原总辐射可比新疆高约三分之一，比同纬度沿海约高一倍，比四川盆地高出近两倍。</p>
+
+    <h2>5. 短波 / 长波与地面净辐射</h2>
+    <p>太阳辐射为短波辐射，地球和大气辐射为长波辐射，常以约 <strong>4 μm</strong> 为分界。四分量辐射包括短波（向上、向下）与长波（向上、向下）。</p>
+    <p><strong>地面净辐射</strong>（地表辐射平衡）：单位时间、单位面积上，地表面吸收的太阳总辐射和大气逆辐射，与本身放射辐射之差；也可理解为短波、长波收支相抵后的净收入或净支出。</p>
+    <p>常用表述：地面吸收的太阳总辐射与地面有效辐射之差。记地面辐射平衡为相关量，（Q+q）为总辐射，a 为地面对总辐射的反射率，并计入地面有效辐射。</p>
+
+    <div class="note-box">
+      本文由原 Word 笔记提取整理；原文件中的插图未全部迁入网页。完整图文可下载原 Word 查看。
+    </div>
+  </article>
+</div>
+</body>
+</html>

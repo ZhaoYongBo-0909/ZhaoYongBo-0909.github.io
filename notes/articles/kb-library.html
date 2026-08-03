@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识口袋总览</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#1c1c1e;--muted:#6b7280;--accent:#9b7ae8;--heading:#d4a5d8;--shadow:0 4px 24px rgba(0,0,0,.06);--font:'DM Sans','Noto Sans SC',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px 64px}
+.chip{display:inline-flex;padding:9px 16px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);color:var(--muted);font-size:.88rem;font-weight:500;margin:0 8px 16px 0}
+.card{background:var(--card);border-radius:24px;box-shadow:var(--shadow);padding:28px 30px 34px}
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--heading)}
+h1{font-size:1.5rem;margin:8px 0 10px}
+.meta{color:var(--muted);font-size:.9rem;margin-bottom:16px}
+.tip{background:#fff8eb;border:1px solid #fde68a;border-radius:14px;padding:12px 14px;color:#92400e;font-size:.86rem;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.item{padding:14px 16px;border:1px solid #eceef2;border-radius:16px}
+.item:hover{border-color:#e0d4f5}
+.item strong{display:block;margin-bottom:4px}
+.item span{font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="chip" href="../../notes.html#knowledge-pocket">← 返回笔记</a>
+  <div class="card">
+    <div class="eyebrow">Knowledge Pocket</div>
+    <h1>知识口袋总览</h1>
+    <p class="meta" id="meta">加载中…</p>
+    <div class="tip">「集中教学」仅在本机 <code>notes/local/</code> 显示，不会上传 GitHub。其余领域文档在 <code>notes/files/kb/</code>。</div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+<script src="../kb-tree.js"></script>
+<script>
+function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+function countNotes(n){let c=(n.notes||[]).length;for(const ch of n.children||[])c+=countNotes(ch);return c}
+const tree = window.KB_TREE;
+if(!tree){document.getElementById('meta').textContent='未加载目录';}
+else{
+  const total = countNotes(tree);
+  document.getElementById('meta').textContent = `已上传领域 ${tree.children.length} 个 · 笔记条目约 ${total} 条`;
+  document.getElementById('grid').innerHTML = tree.children.map(c =>
+    `<a class="item" href="../../notes.html#${esc(c.id)}"><strong>${esc(c.title)}</strong><span>${countNotes(c)} 条</span></a>`
+  ).join('');
+}
+</script>
+</body>
+</html>
